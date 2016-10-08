@@ -9,5 +9,11 @@ mathics: mathics.o
     
 all: mathics
 
+test: run_test
+	./run_test
+
+run_test: test.cpp
+	g++ test.cpp -lgtest -o run_test
+
 clean:
 	rm -f *.o mathics

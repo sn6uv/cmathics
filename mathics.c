@@ -26,7 +26,7 @@ typedef struct {
 
 
 MachineInteger* MachineInteger_new(int* value) {
-    MachineInteger* p = malloc(sizeof(MachineInteger));
+    MachineInteger* p = (MachineInteger*) malloc(sizeof(MachineInteger));
     if (p) {
         p->ref = 0;
         p->type = MachineIntegerType;
@@ -49,7 +49,7 @@ typedef struct {
 
 
 MachineReal* MachineReal_new(double* value) {
-    MachineReal* p = malloc(sizeof(MachineReal));
+    MachineReal* p = (MachineReal*) malloc(sizeof(MachineReal));
     if (p) {
         p->ref = 0;
         p->type = MachineRealType;
@@ -107,7 +107,7 @@ typedef struct {
 NormalExpression* NormalExpression_new(uint32_t argc) {
     uint32_t hash;
     hash = 0;   // TODO
-    NormalExpression* p = malloc(sizeof(NormalExpression) + argc * sizeof(void*));
+    NormalExpression* p = (NormalExpression*) malloc(sizeof(NormalExpression) + argc * sizeof(void*));
     if (p) {
         p->ref = 0;
         p->type = NormalExpressionType;
@@ -121,6 +121,12 @@ NormalExpression* NormalExpression_new(uint32_t argc) {
 void NormalExpression_free(NormalExpression* p) {
     free(p);
 }
+
+
+/*
+/ HoldAll is equivalent to HoldFirst and HoldRest. We could save a couple of
+/ bits here but it's not worth it because of packing.
+*/
 
 
 typedef struct {
@@ -172,17 +178,19 @@ typedef struct {
 } Symbol;
 
 
+// FIXME need to bootstrap Symbol("List")
 NormalExpression* List_new(uint32_t argc);
 
 
 Symbol* Symbol_new(const char* s) {
-    Symbol* p = malloc(sizeof(Symbol));
-    char *name = malloc(strlen(s) + 1);
+    Symbol* p = (Symbol*) malloc(sizeof(Symbol));
+    char *name = (char*) malloc(strlen(s) + 1);
     if (p && name) {
         p->ref = 0;
         p->type = SymbolType;
         strcpy(name, s);
         p->name = name;
+        /*
         p->own_values = List_new(0);
         p->sub_values = List_new(0);
         p->up_values = List_new(0);
@@ -192,6 +200,7 @@ Symbol* Symbol_new(const char* s) {
         p->default_values = List_new(0);
         p->messages = List_new(0);
         p->options = List_new(0);
+        */
     }
     return p;
 }
@@ -221,7 +230,7 @@ typedef struct {
 
 
 String* String_new(char* value, uint32_t length) {
-    String* p = malloc(sizeof(String));
+    String* p = (String*) malloc(sizeof(String));
     if (p) {
         p->ref = 0;
         p->type = StringType;
@@ -237,13 +246,14 @@ void String_free(String* p) {
 }
 
 
+/*
 int main() {
     MachineReal* yp;
     MachineInteger* xp;
     String* zp;
 
-    int* z = malloc(sizeof(int));
-    double *y = malloc(sizeof(double));
+    int* z = (int*) malloc(sizeof(int));
+    double *y = (double*) malloc(sizeof(double));
     *z = 5;
     *y = 1.6;
     xp = MachineInteger_new(z);
@@ -259,3 +269,4 @@ int main() {
     String_free(zp);
     return 0;
 }
+*/
