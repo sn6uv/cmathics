@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 typedef enum {
@@ -103,7 +104,9 @@ typedef struct {
 } NormalExpression;
 
 
-NormalExpression* NormalExpression_new(uint32_t hash, uint32_t argc) {
+NormalExpression* NormalExpression_new(uint32_t argc) {
+    uint32_t hash;
+    hash = 0;   // TODO
     NormalExpression* p = malloc(sizeof(NormalExpression) + argc * sizeof(void*));
     if (p) {
         p->ref = 0;
@@ -114,17 +117,10 @@ NormalExpression* NormalExpression_new(uint32_t hash, uint32_t argc) {
     return p;
 }
 
+
 void NormalExpression_free(NormalExpression* p) {
     free(p);
 }
-
-
-typedef enum {
-    None,
-    First,
-    Rest,
-    All
-} __attribute__((packed)) HoldAttribute;
 
 
 typedef struct {
@@ -140,11 +136,16 @@ typedef struct {
     unsigned int is_protected: 1;
     unsigned int is_locked: 1;
     unsigned int is_readprotected: 1;
-    // evaluation attributes
-    HoldAttribute hold;
-    HoldAttribute nhold;
-    // misc attributes
+    // evaluation hold attributes
+    unsigned int is_holdfirst: 1;
+    unsigned int is_holdrest: 1;
+    unsigned int is_holdall: 1;
     unsigned int is_holdallcomplete: 1;
+    // evaluation nhold attributes
+    unsigned int is_nholdfirst: 1;
+    unsigned int is_nholdrest: 1;
+    unsigned int is_nholdall: 1;
+    // misc attributes
     unsigned int is_sequencehold: 1;
     unsigned int is_temporary: 1;
     unsigned int is_stub: 1;
@@ -169,6 +170,46 @@ typedef struct {
     void *downcode;  // XXX
     Attributes attributes;
 } Symbol;
+
+
+NormalExpression* List_new(uint32_t argc);
+
+
+Symbol* Symbol_new(const char* s) {
+    Symbol* p = malloc(sizeof(Symbol));
+    char *name = malloc(strlen(s) + 1);
+    if (p && name) {
+        p->ref = 0;
+        p->type = SymbolType;
+        strcpy(name, s);
+        p->name = name;
+        p->own_values = List_new(0);
+        p->sub_values = List_new(0);
+        p->up_values = List_new(0);
+        p->down_values = List_new(0);
+        p->n_values = List_new(0);
+        p->format_values = List_new(0);
+        p->default_values = List_new(0);
+        p->messages = List_new(0);
+        p->options = List_new(0);
+    }
+    return p;
+}
+
+
+void Symbol_free(Symbol* p) {
+    free(p);
+}
+
+
+NormalExpression* List_new(uint32_t argc) {
+    Symbol* head = Symbol_new("List");
+    NormalExpression* expr = NormalExpression_new(argc);
+    if (head && expr) {
+        expr->head = head;
+    }
+    return expr;
+}
 
 
 typedef struct {
