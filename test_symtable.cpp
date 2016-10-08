@@ -21,7 +21,7 @@ TEST(Symbol_Definitions, new0) {
 TEST(Symbol_Definitions, set) {
     Definitions* d = Definitions_new(32);
     Symbol* s = Symbol_new("abc");
-    Definitions_set(d, s);
+    ASSERT_EQ(Definitions_set(d, s), 0);
     EXPECT_EQ(d->size, 32);
     EXPECT_EQ(d->count, 1);
     Definitions_free(d);
@@ -120,11 +120,26 @@ TEST(Symbol_Definitions, get_collision_NULL) {
 
 
 TEST(Symbol_Definitions, set_FULL) {
-    Definitions* d = Definitions_new(32);
-    for (int i = 0; i < 32; i++) {
-        Symbol* s = Symbol_new("abc");
+    bool retcode;
+    char c;
+    Definitions* d = Definitions_new(16);
+    for (int i = 0; i < 16; i++) {
+        c = (char) (i + 'a');
+        Symbol* s = Symbol_new(&c);
+        Definitions_set(d, s);
     }
+    ASSERT_EQ(d->count, 16);
+    ASSERT_EQ(d->size, 16);
+
+    Symbol* s = Symbol_new("g");
+    retcode = Definitions_set(d, s);
+
+    EXPECT_EQ(retcode, 1);
+    EXPECT_EQ(d->count, 16);
+    EXPECT_EQ(d->size, 16);
+
     Definitions_free(d);
+    Symbol_free(s);
 }
 
 

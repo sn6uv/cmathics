@@ -1,4 +1,5 @@
 #include "types/symbol.c"
+#include <assert.h>
 
 typedef struct {
     uint32_t size;
@@ -43,14 +44,16 @@ uint32_t Definitions_hash(const char* key, const uint32_t size) {
     uint32_t c;
 
     hash = 5381;
-    while (c = *key++)
+    while ((c = (uint32_t) *key++) != 0)
         hash = (hash * 33 + c);
 
     return (uint32_t) (hash % size);
 }
 
 
-void Definitions_set(Definitions* d, Symbol* s) {
+// puts an entry into the symbol table
+// returns 0 on successful and 1 if the items already exists
+bool Definitions_set(Definitions* d, Symbol* s) {
     uint32_t bin;
     Symbol* next;
     
@@ -62,19 +65,19 @@ void Definitions_set(Definitions* d, Symbol* s) {
         next = d->table[++bin % d->size];
     }
 
-    if (next == NULL) {
-        // set
+    if (next == NULL) {  // set
         d->table[bin] = s;
         d->count++;
-    } else {
-        // update
-        // assert(strcmp(next->name, s->name) == 0);
-        // TODO ref counting?
-        d->table[bin] = s;
+        return 0;
+    } else {  // item already exists
+        assert(strcmp(next->name, s->name) == 0);
+        return 1;
     }
 }
 
 
+// find an entry in the symbol table
+// returns NULL upon failure
 Symbol* Definitions_get(Definitions* d, const char* key) {
     uint32_t bin;
     Symbol* s;
