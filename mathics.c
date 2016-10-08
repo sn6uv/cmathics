@@ -66,6 +66,114 @@ void MachineReal_free(MachineReal* p) {
 typedef struct {
     uint32_t ref;
     Type type;
+    void* value;
+    double precision;
+} BigInteger;
+
+
+typedef union {
+    MachineInteger machine;
+    BigInteger big;
+} Integer;
+
+
+typedef struct {
+    uint32_t ref;
+    Type type;
+    Integer* numer;
+    Integer* denom;
+} Rational;
+
+
+// typedef struct {
+//     uint32_t ref;
+//     Type type;
+//     char *name;
+// } Symbol;
+
+
+typedef struct {
+    uint32_t ref;
+    Type type;
+    uint32_t last_evaluated;
+    uint32_t hash;
+    uint32_t argc;
+    void* head;
+    void* leaves[];  // zero length array of pointers
+} NormalExpression;
+
+
+NormalExpression* NormalExpression_new(uint32_t hash, uint32_t argc) {
+    NormalExpression* p = malloc(sizeof(NormalExpression) + argc * sizeof(void*));
+    if (p) {
+        p->ref = 0;
+        p->type = NormalExpressionType;
+        p->hash = hash;
+        p->argc = argc;
+    }
+    return p;
+}
+
+void NormalExpression_free(NormalExpression* p) {
+    free(p);
+}
+
+
+typedef enum {
+    None,
+    First,
+    Rest,
+    All
+} __attribute__((packed)) HoldAttribute;
+
+
+typedef struct {
+    // pattern matching attributes
+    unsigned int is_orderless: 1;
+    unsigned int is_flat: 1;
+    unsigned int is_oneidentity: 1;
+    unsigned int is_listable: 1;
+    // calculus attributes
+    unsigned int is_constant: 1;
+    unsigned int is_numericfunction: 1;
+    // rw attributes
+    unsigned int is_protected: 1;
+    unsigned int is_locked: 1;
+    unsigned int is_readprotected: 1;
+    // evaluation attributes
+    HoldAttribute hold;
+    HoldAttribute nhold;
+    // misc attributes
+    unsigned int is_holdallcomplete: 1;
+    unsigned int is_sequencehold: 1;
+    unsigned int is_temporary: 1;
+    unsigned int is_stub: 1;
+} Attributes;
+
+
+typedef struct {
+    uint32_t ref;
+    Type type;
+    char* name;
+    NormalExpression* own_values;
+    NormalExpression* sub_values;
+    NormalExpression* up_values;
+    NormalExpression* down_values;
+    NormalExpression* n_values;
+    NormalExpression* format_values;
+    NormalExpression* default_values;
+    NormalExpression* messages;
+    NormalExpression* options;
+    void *subcode;   // XXX
+    void *upcode;    // XXX
+    void *downcode;  // XXX
+    Attributes attributes;
+} Symbol;
+
+
+typedef struct {
+    uint32_t ref;
+    Type type;
     char* value;
     uint32_t length;
 } String;
