@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-Wall -std=c99 -I.
+FLAGS=-Wall -pedantic -std=c99 -g -I.
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(FLAGS)
