@@ -63,7 +63,7 @@ typedef struct {
 
 Definitions* Definitions_new(uint32_t size);
 void Definitions_free(Definitions* d);
-
+void Definitions_init(Definitions* d, Definitions* system_definitions);
 Definition* Definitions_lookup(Definitions* d, const char* name);
 uint32_t Definitions_hash(const char* key, const uint32_t size);    // exposed for testing
 

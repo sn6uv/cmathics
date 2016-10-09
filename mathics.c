@@ -8,8 +8,5 @@
 
 
 int main() {
-    // Symbol* s = Symbol_new("abc");
-    // printf("hello world %s.\n", s->name);
-    // Symbol_free(s);
     return 0;
 }

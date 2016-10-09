@@ -52,20 +52,30 @@ Definitions* Definitions_new(uint32_t size) {
 }
 
 
-void Definitions_init_system(Definitions* d, NormalExpression* EmptyList, bool is_system) {
+void Definitions_init(Definitions* d, Definitions* system_definitions) {
     uint32_t bin;
     Definition* list_defn;
+    NormalExpression* EmptyList;
 
-    d->EmptyList = EmptyList;
-    if (is_system) {
+    if (system_definitions == NULL) {   // this is the system definitions
+        // add the `List` entry
         bin = Definitions_hash("List", d->size);
         list_defn = &(d->table[bin]);
         assert(list_defn->name == NULL);
         Definition_init(list_defn, "List", NULL);
         d->count++;
+
+        // construct common `List[]` for bootstrapping
+        EmptyList = NormalExpression_new(0);
         EmptyList->head = list_defn;
+    } else {
+        EmptyList = system_definitions->EmptyList;
     }
+
+    // assign EmptyList pointer
+    d->EmptyList = EmptyList;
 }
+
 
 void Definitions_free(Definitions* d) {
     free(d->table);
