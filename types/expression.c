@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "expression.h"
+#include "symtable.h"
 
 
 NormalExpression* NormalExpression_new(uint32_t argc) {

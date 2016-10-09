@@ -51,10 +51,17 @@ uint32_t Definitions_hash(const char* key, const uint32_t size) {
 
 
 Symbol* Definitions_lookup(Definitions* d, const char* name) {
+    // TODO avoid double lookup
+    bool retcode;
+
     Symbol* result;
     result = Definitions_get(d, name);
     if (result == NULL) {
         result = Symbol_new(name);
+        if (result != NULL) {
+            retcode = Definitions_set(d, result);
+            assert(retcode == 0);
+        }
     }
     return result;
 }

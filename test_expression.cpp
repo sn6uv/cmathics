@@ -2,7 +2,6 @@
 
 
 extern "C" {
-    #include "types/symtable.h"
     #include "types/expression.h"
 }
 
