@@ -2,8 +2,8 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-    #include "types/definitions.h"
-    #include "types/expression.h"
+    #include "core/definitions.h"
+    #include "core/expression.h"
 }
 
 

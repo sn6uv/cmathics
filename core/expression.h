@@ -13,7 +13,7 @@ typedef struct __NormalExpression {
     uint32_t hash;
     uint32_t argc;
     struct __Definition* head;
-    struct __NormalExpression* leaves[];  // zero length array of pointers
+    BaseExpression* leaves[];  // zero length array of pointers
 } NormalExpression;
 
 

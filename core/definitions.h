@@ -1,6 +1,7 @@
 #ifndef SYMTABLE_H
 #define SYMTABLE_H
 #include <stdbool.h>
+#include "types.h"
 
 
 struct __NormalExpression;
@@ -36,6 +37,7 @@ typedef struct {
 
 
 typedef struct __Definition {
+    BaseExpression* base;
     char* name;
     struct __NormalExpression* own_values;
     struct __NormalExpression* sub_values;

@@ -1,8 +1,8 @@
 CC=gcc
 CPP=g++
 FLAGS=-Wall -pedantic -std=c99 -g -I.
-DEPS = types/expression.c types/definitions.c
-OBJ = types/expression.o types/definitions.o
+DEPS = core/expression.c core/definitions.c
+OBJ = core/expression.o core/definitions.o
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(FLAGS)
