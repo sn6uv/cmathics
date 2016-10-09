@@ -1,5 +1,10 @@
-#include "mathics.c"
 #include <gtest/gtest.h>
+
+
+extern "C" {
+    #include "types/expression.h"
+}
+
 
 TEST(Symbol_test, new) {
     char name[] = "List";
@@ -9,6 +14,7 @@ TEST(Symbol_test, new) {
         EXPECT_EQ(symb->name[i], name[i]);
     Symbol_free(symb);
 }
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

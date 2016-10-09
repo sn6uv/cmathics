@@ -1,6 +1,10 @@
 #include <stdlib.h>
-#include "types/symtable.h"
 #include <gtest/gtest.h>
+
+extern "C" {
+    #include "types/symtable.h"
+    #include "types/expression.h"
+}
 
 
 TEST(Symbol_Definitions, new32) {
