@@ -41,6 +41,7 @@ Symbol* Symbol_new(const char* s) {
         p->base.ref = 0;
         p->base.type = SymbolType;
         strcpy(name, s);
+        p->name = name;
     }
     return p;
 }
