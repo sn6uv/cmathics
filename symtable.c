@@ -1,4 +1,4 @@
-#include "types/symbol.c"
+#include "types/expression.c"
 #include <assert.h>
 
 typedef struct {

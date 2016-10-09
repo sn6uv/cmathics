@@ -10,3 +10,9 @@ typedef enum {
     StringType,
     RawExpressionType
 } Type;
+
+
+typedef struct {
+    uint32_t ref;
+    Type type;
+} BaseExpression;

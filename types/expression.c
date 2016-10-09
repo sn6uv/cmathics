@@ -12,8 +12,8 @@ NormalExpression* NormalExpression_new(uint32_t argc) {
     hash = 0;   // TODO
     NormalExpression* p = (NormalExpression*) malloc(sizeof(NormalExpression) + argc * sizeof(void*));
     if (p) {
-        p->ref = 0;
-        p->type = NormalExpressionType;
+        p->base.ref = 0;
+        p->base.type = NormalExpressionType;
         p->hash = hash;
         p->argc = argc;
     }
@@ -39,8 +39,8 @@ Symbol* Symbol_new(const char* s) {
     Symbol* p = (Symbol*) malloc(sizeof(Symbol));
     char *name = (char*) malloc(strlen(s) + 1);
     if (p && name) {
-        p->ref = 0;
-        p->type = SymbolType;
+        p->base.ref = 0;
+        p->base.type = SymbolType;
         strcpy(name, s);
         p->name = name;
         p->own_values = List_new(0);
@@ -62,10 +62,11 @@ void Symbol_free(Symbol* p) {
 }
 
 
+// TODO common reference
 Symbol* ListSymbol(void) {
     Symbol* s = (Symbol*) malloc(sizeof(Symbol));
-    s->ref = 0;
-    s->type = SymbolType;
+    s->base.ref = 0;
+    s->base.type = SymbolType;
     s->name = (char*) malloc(5);
     strcpy(s->name, "List");
     s->own_values = NormalExpression_new_head(0, s);    // leaves point to self
@@ -80,6 +81,7 @@ Symbol* ListSymbol(void) {
     s->options = NormalExpression_new_head(0, s);
     return s;
 }
+
 
 NormalExpression* List_new(uint32_t length) {
     NormalExpression* result;

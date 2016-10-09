@@ -74,7 +74,7 @@ TEST(Symbol_Definitions, get) {
     EXPECT_EQ(d->size, 32);
     EXPECT_EQ(d->count, 1);
     ASSERT_TRUE(t != NULL);
-    EXPECT_EQ(t->type, SymbolType);
+    EXPECT_EQ(t->base.type, SymbolType);
     EXPECT_STREQ(t->name, "abc");
     Definitions_free(d);
 }

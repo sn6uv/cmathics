@@ -1,16 +1,12 @@
-typedef struct {
-    uint32_t ref;
-    Type type;
-    char* value;
-    uint32_t length;
-} String;
+#include "types.h"
+#include "string.h"
 
 
 String* String_new(char* value, uint32_t length) {
     String* p = (String*) malloc(sizeof(String));
     if (p) {
-        p->ref = 0;
-        p->type = StringType;
+        p->base.ref = 0;
+        p->base.type = StringType;
         p->value = value;
         p->length = length;
     }

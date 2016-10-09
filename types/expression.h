@@ -1,9 +1,7 @@
 struct Symbol_;
-struct NormalExpression_;
 
 typedef struct NormalExpression_ {
-    uint32_t ref;
-    Type type;
+    BaseExpression base;
     uint32_t last_evaluated;
     uint32_t hash;
     uint32_t argc;
@@ -42,8 +40,7 @@ typedef struct {
 
 
 typedef struct Symbol_ {
-    uint32_t ref;
-    Type type;
+    BaseExpression base;
     char* name;
     NormalExpression* own_values;
     NormalExpression* sub_values;
