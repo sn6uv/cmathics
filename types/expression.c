@@ -4,7 +4,6 @@
 #include <string.h>
 
 #include "expression.h"
-#include "symtable.h"
 
 
 NormalExpression* NormalExpression_new(uint32_t argc) {
@@ -42,16 +41,6 @@ Symbol* Symbol_new(const char* s) {
         p->base.ref = 0;
         p->base.type = SymbolType;
         strcpy(name, s);
-        p->name = name;
-        p->own_values = List_new(0);
-        p->sub_values = List_new(0);
-        p->up_values = List_new(0);
-        p->down_values = List_new(0);
-        p->n_values = List_new(0);
-        p->format_values = List_new(0);
-        p->default_values = List_new(0);
-        p->messages = List_new(0);
-        p->options = List_new(0);
     }
     return p;
 }
@@ -69,16 +58,6 @@ Symbol* ListSymbol(void) {
     s->base.type = SymbolType;
     s->name = (char*) malloc(5);
     strcpy(s->name, "List");
-    s->own_values = NormalExpression_new_head(0, s);    // leaves point to self
-    s->own_values = NormalExpression_new_head(0, s);
-    s->sub_values = NormalExpression_new_head(0, s);
-    s->up_values = NormalExpression_new_head(0, s);
-    s->down_values = NormalExpression_new_head(0, s);
-    s->n_values = NormalExpression_new_head(0, s);
-    s->format_values = NormalExpression_new_head(0, s);
-    s->default_values = NormalExpression_new_head(0, s);
-    s->messages = NormalExpression_new_head(0, s);
-    s->options = NormalExpression_new_head(0, s);
     return s;
 }
 

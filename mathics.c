@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "types/expression.h"
-#include "types/symtable.h"
+#include "types/definitions.h"
 
 
 int main() {
