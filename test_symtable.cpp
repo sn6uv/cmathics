@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "symtable.c"
+#include "types/symtable.h"
 #include <gtest/gtest.h>
 
 

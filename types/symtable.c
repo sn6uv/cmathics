@@ -1,11 +1,10 @@
-#include "types/expression.c"
 #include <assert.h>
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-typedef struct {
-    uint32_t size;
-    uint32_t count;
-    Symbol** table;
-} Definitions;
+#include "symtable.h"
 
 
 Definitions* Definitions_new(uint32_t size) {
@@ -48,6 +47,16 @@ uint32_t Definitions_hash(const char* key, const uint32_t size) {
         hash = (hash * 33 + c);
 
     return (uint32_t) (hash % size);
+}
+
+
+Symbol* Definitions_lookup(Definitions* d, const char* name) {
+    Symbol* result;
+    result = Definitions_get(d, name);
+    if (result == NULL) {
+        result = Symbol_new(name);
+    }
+    return result;
 }
 
 

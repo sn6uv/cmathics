@@ -1,3 +1,8 @@
+#ifndef TYPES_H
+#define TYPES_H
+#include <stdint.h>
+
+
 typedef enum {
     MachineIntegerType,
     BigIntegerType,
@@ -16,3 +21,4 @@ typedef struct {
     uint32_t ref;
     Type type;
 } BaseExpression;
+#endif

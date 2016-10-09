@@ -1,4 +1,4 @@
-#include "types/expression.c"
+#include "types/expression.h"
 #include <gtest/gtest.h>
 
 

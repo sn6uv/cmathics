@@ -1,16 +1,24 @@
-struct Symbol_;
+#ifndef EXPRESSION_H
+#define EXPRESSION_H
 
-typedef struct NormalExpression_ {
+#include "types.h"
+
+
+struct __Symbol;
+struct __NormalExpression;
+
+
+struct __NormalExpression {
     BaseExpression base;
     uint32_t last_evaluated;
     uint32_t hash;
     uint32_t argc;
-    Symbol_* head;
-    NormalExpression_* leaves[];  // zero length array of pointers
-} NormalExpression;
+    struct __Symbol* head;
+    struct __NormalExpression* leaves[];  // zero length array of pointers
+};
 
 
-typedef struct {
+struct __Attributes {
     // pattern matching attributes
     unsigned int is_orderless: 1;
     unsigned int is_flat: 1;
@@ -36,29 +44,34 @@ typedef struct {
     unsigned int is_sequencehold: 1;
     unsigned int is_temporary: 1;
     unsigned int is_stub: 1;
-} Attributes;
+};
 
 
-typedef struct Symbol_ {
+struct __Symbol {
     BaseExpression base;
     char* name;
-    NormalExpression* own_values;
-    NormalExpression* sub_values;
-    NormalExpression* up_values;
-    NormalExpression* down_values;
-    NormalExpression* n_values;
-    NormalExpression* format_values;
-    NormalExpression* default_values;
-    NormalExpression* messages;
-    NormalExpression* options;
+    struct __NormalExpression* own_values;
+    struct __NormalExpression* sub_values;
+    struct __NormalExpression* up_values;
+    struct __NormalExpression* down_values;
+    struct __NormalExpression* n_values;
+    struct __NormalExpression* format_values;
+    struct __NormalExpression* default_values;
+    struct __NormalExpression* messages;
+    struct __NormalExpression* options;
     void *subcode;   // XXX
     void *upcode;    // XXX
     void *downcode;  // XXX
-    Attributes attributes;
-} Symbol;
+    struct __Attributes attributes;
+};
+
+
+typedef struct __Symbol Symbol;
+typedef struct __NormalExpression NormalExpression;
 
 
 Symbol* Symbol_new(const char* s);
 void Symbol_free(Symbol* p);
 
 NormalExpression* List_new(uint32_t length);
+#endif

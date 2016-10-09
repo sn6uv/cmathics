@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "types.c"
 #include "expression.h"
 
 
