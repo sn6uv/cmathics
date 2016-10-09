@@ -1,3 +1,5 @@
+#ifndef INT_H
+#define INT_H
 #include "types.h"
 
 
@@ -26,5 +28,4 @@ typedef struct {
     Integer* denom;
 } Rational;
 
-
-
+#endif

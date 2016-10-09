@@ -2,9 +2,8 @@
 #define SYMTABLE_H
 #include <stdbool.h>
 #include "types.h"
+#include "expression.h"
 
-
-struct __NormalExpression;
 
 
 typedef struct {
@@ -36,18 +35,18 @@ typedef struct {
 } Attributes;
 
 
-typedef struct __Definition {
-    BaseExpression* base;
+typedef struct {
+    BaseExpression base;
     char* name;
-    struct __NormalExpression* own_values;
-    struct __NormalExpression* sub_values;
-    struct __NormalExpression* up_values;
-    struct __NormalExpression* down_values;
-    struct __NormalExpression* n_values;
-    struct __NormalExpression* format_values;
-    struct __NormalExpression* default_values;
-    struct __NormalExpression* messages;
-    struct __NormalExpression* options;
+    NormalExpression* own_values;
+    NormalExpression* sub_values;
+    NormalExpression* up_values;
+    NormalExpression* down_values;
+    NormalExpression* n_values;
+    NormalExpression* format_values;
+    NormalExpression* default_values;
+    NormalExpression* messages;
+    NormalExpression* options;
     void *subcode;   // XXX
     void *upcode;    // XXX
     void *downcode;  // XXX
@@ -58,7 +57,7 @@ typedef struct __Definition {
 typedef struct {
     uint32_t size;
     uint32_t count;
-    struct __NormalExpression* EmptyList;
+    NormalExpression* EmptyList;
     Definition* table;
 } Definitions;
 

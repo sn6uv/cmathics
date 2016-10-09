@@ -14,6 +14,8 @@ void Definition_init(Definition* d, const char* name, NormalExpression* EmptyLis
     if (d != NULL) {
         strcpy(d->name, name);
     }
+    d->base.ref = 0;
+    d->base.type = SymbolType;
     d->own_values = EmptyList;
     d->sub_values = EmptyList;
     d->up_values = EmptyList;
@@ -67,7 +69,7 @@ void Definitions_init(Definitions* d, Definitions* system_definitions) {
 
         // construct common `List[]` for bootstrapping
         EmptyList = NormalExpression_new(0);
-        EmptyList->head = list_defn;
+        EmptyList->head = (BaseExpression*) list_defn;
     } else {
         EmptyList = system_definitions->EmptyList;
     }

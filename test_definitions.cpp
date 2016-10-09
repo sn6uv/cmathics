@@ -4,6 +4,7 @@
 extern "C" {
     #include "core/definitions.h"
     #include "core/expression.h"
+    #include "core/types.h"
 }
 
 
@@ -31,7 +32,8 @@ TEST(Definitions, init) {
     Definition* l = Definitions_lookup(d, "List");
     ASSERT_TRUE(l != NULL);
     EXPECT_STREQ(l->name, "List");
-    EXPECT_EQ(d->EmptyList->head, l);
+    ASSERT_EQ(d->EmptyList->head->type, SymbolType);
+    EXPECT_EQ((Definition*) d->EmptyList->head, l);
     Definitions_free(d);
 }
 

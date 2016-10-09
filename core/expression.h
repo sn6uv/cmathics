@@ -4,15 +4,12 @@
 #include "types.h"
 
 
-struct __Definition;
-
-
-typedef struct __NormalExpression {
+typedef struct {
     BaseExpression base;
     uint32_t last_evaluated;
     uint32_t hash;
     uint32_t argc;
-    struct __Definition* head;
+    BaseExpression* head;
     BaseExpression* leaves[];  // zero length array of pointers
 } NormalExpression;
 

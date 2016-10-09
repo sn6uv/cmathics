@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "types.h"
 #include "int.h"
 
