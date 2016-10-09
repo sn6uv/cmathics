@@ -1,10 +1,17 @@
-#include "types/expression.h"
 #include <gtest/gtest.h>
 
 
-TEST(Symbol, Symbol_new) {
+extern "C" {
+    #include "types/symtable.h"
+    #include "types/expression.h"
+}
+
+
+TEST(Symbol, new) {
     Symbol* s = Symbol_new("a");
     ASSERT_TRUE(s != NULL);
+    EXPECT_STREQ(s->name, "a");
+    Symbol_free(s);
 }
 
 

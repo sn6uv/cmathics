@@ -7,7 +7,7 @@ extern "C" {
 }
 
 
-TEST(Symbol_Definitions, new32) {
+TEST(Definitions, new32) {
     Definitions* d = Definitions_new(32);
     ASSERT_TRUE(d != NULL);
     EXPECT_EQ(d->size, 32);
@@ -16,13 +16,13 @@ TEST(Symbol_Definitions, new32) {
 }
 
 
-TEST(Symbol_Definitions, new0) {
+TEST(Definitions, new0) {
     Definitions* d = Definitions_new(0);
     EXPECT_TRUE(d == NULL);
 }
 
 
-TEST(Symbol_Definitions, set) {
+TEST(Definitions, set) {
     Definitions* d = Definitions_new(32);
     Symbol* s = Symbol_new("abc");
     ASSERT_EQ(Definitions_set(d, s), 0);
@@ -31,7 +31,7 @@ TEST(Symbol_Definitions, set) {
     Definitions_free(d);
 }
 
-TEST(Symbol_Definitions, set_no_collision) {
+TEST(Definitions, set_no_collision) {
     ASSERT_NE(Definitions_hash("a", 2), Definitions_hash("b", 2));
     Definitions* d = Definitions_new(2);
     Symbol* s1 = Symbol_new("a");
@@ -44,7 +44,7 @@ TEST(Symbol_Definitions, set_no_collision) {
 }
 
 
-TEST(Symbol_Definitions, set_collision_overwrite) {
+TEST(Definitions, set_collision_overwrite) {
     ASSERT_EQ(Definitions_hash("a", 2), Definitions_hash("a", 2));
     Definitions* d = Definitions_new(2);
     Symbol* s1 = Symbol_new("a");
@@ -57,7 +57,7 @@ TEST(Symbol_Definitions, set_collision_overwrite) {
 }
 
 
-TEST(Symbol_Definitions, set_collision_no_overwrite) {
+TEST(Definitions, set_collision_no_overwrite) {
     ASSERT_EQ(Definitions_hash("a", 2), Definitions_hash("c", 2));
     Definitions* d = Definitions_new(2);
     Symbol* s1 = Symbol_new("a");
@@ -70,7 +70,7 @@ TEST(Symbol_Definitions, set_collision_no_overwrite) {
 }
 
 
-TEST(Symbol_Definitions, get) {
+TEST(Definitions, get) {
     Definitions* d = Definitions_new(32);
     Symbol* s = Symbol_new("abc");
     Definitions_set(d, s);
@@ -84,7 +84,7 @@ TEST(Symbol_Definitions, get) {
 }
 
 
-TEST(Symbol_Definitions, get_NULL) {
+TEST(Definitions, get_NULL) {
     Definitions* d = Definitions_new(32);
     Symbol* t = Definitions_get(d, "abc");
     EXPECT_EQ(d->size, 32);
@@ -94,7 +94,7 @@ TEST(Symbol_Definitions, get_NULL) {
 }
 
 
-TEST(Symbol_Definitions, get_collision) {
+TEST(Definitions, get_collision) {
     ASSERT_EQ(Definitions_hash("a", 2), Definitions_hash("c", 2));
     Definitions* d = Definitions_new(2);
     Symbol* s1 = Symbol_new("a");
@@ -112,7 +112,7 @@ TEST(Symbol_Definitions, get_collision) {
 }
 
 
-TEST(Symbol_Definitions, get_collision_NULL) {
+TEST(Definitions, get_collision_NULL) {
     Definitions* d = Definitions_new(2);
     Symbol* s = Symbol_new("a");
     Definitions_set(d, s);
@@ -123,7 +123,7 @@ TEST(Symbol_Definitions, get_collision_NULL) {
 }
 
 
-TEST(Symbol_Definitions, set_FULL) {
+TEST(Definitions, set_FULL) {
     bool retcode;
     char c;
     Definitions* d = Definitions_new(16);

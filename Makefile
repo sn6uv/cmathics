@@ -10,17 +10,17 @@ OBJ = types/expression.o types/symtable.o
 mathics: $(OBJ) mathics.o
 	$(CC) -o $@ $^ $(CFLAGS)
     
-test: run_test run_test_symtable
-	./run_test
-	./run_test_symtable
+test: test_expression test_symtable
+	./test_expression
+	./test_symtable
 
-run_test: test.cpp $(OBJ)
-	$(CPP) -c test.cpp -o test.o -Wall -pedantic -g -I,
-	$(CPP) test.o $(OBJ) -lgtest -o run_test
+test_expression: test_expression.cpp $(OBJ)
+	$(CPP) -c test_expression.cpp -o test_expression.o -Wall -pedantic -g -I.
+	$(CPP) test_expression.o $(OBJ) -lgtest -o test_expression
 
-run_test_symtable: test_symtable.cpp $(OBJ)
-	$(CPP) -c test_symtable.cpp -o test_symtable.o -Wall -pedantic -g -I,
-	$(CPP) test_symtable.o $(OBJ) -lgtest -o run_test_symtable
+test_symtable: test_symtable.cpp $(OBJ)
+	$(CPP) -c test_symtable.cpp -o test_symtable.o -Wall -pedantic -g -I.
+	$(CPP) test_symtable.o $(OBJ) -lgtest -o test_symtable
 
 clean:
 	rm -f mathics.o mathics
