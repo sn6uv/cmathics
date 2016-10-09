@@ -6,12 +6,14 @@ extern "C" {
 }
 
 
+/*
 TEST(Symbol, new) {
     Symbol* s = Symbol_new("a");
     ASSERT_TRUE(s != NULL);
     EXPECT_STREQ(s->name, "a");
     Symbol_free(s);
 }
+*/
 
 
 int main(int argc, char **argv) {

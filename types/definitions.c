@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "definitions.h"
+#include "expression.h"
 
 
 // initialise a definition entry
@@ -46,9 +47,25 @@ Definitions* Definitions_new(uint32_t size) {
 
     d->size = size;
     d->count = 0;
+
     return d;
 }
 
+
+void Definitions_init_system(Definitions* d, NormalExpression* EmptyList, bool is_system) {
+    uint32_t bin;
+    Definition* list_defn;
+
+    d->EmptyList = EmptyList;
+    if (is_system) {
+        bin = Definitions_hash("List", d->size);
+        list_defn = &(d->table[bin]);
+        assert(list_defn->name == NULL);
+        Definition_init(list_defn, "List", NULL);
+        d->count++;
+        EmptyList->head = list_defn;
+    }
+}
 
 void Definitions_free(Definitions* d) {
     free(d->table);
