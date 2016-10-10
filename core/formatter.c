@@ -86,6 +86,7 @@ char* FullForm_NormalExpression(NormalExpression* expr) {
     for (j=0; j < i; j++) {
         free(leaf_results[j]);
     }
+    free(leaf_results);
 
     return result;
 }

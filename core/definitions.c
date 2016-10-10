@@ -80,7 +80,14 @@ void Definitions_init(Definitions* d, Definitions* system_definitions) {
 
 
 void Definitions_free(Definitions* d) {
+    uint32_t i;
+    for (i=0; i<d->size; i++) {
+        if (d->table[i].name != NULL) {
+            free(d->table[i].name);
+        }
+    }
     free(d->table);
+    free(d->EmptyList);
     free(d);
 }
 

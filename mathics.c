@@ -9,6 +9,7 @@
 
 
 int main() {
+    char* buf;
     Definitions* definitions = Definitions_new(64);
     Definitions_init(definitions, NULL);  // System Definitions
     NormalExpression* expr = NormalExpression_new(2);
@@ -17,6 +18,10 @@ int main() {
     expr->leaves[1] = (BaseExpression*) Definitions_lookup(definitions, "b");
     // printf("%i\n", definitions->count);
     // printf("%s\n", FullForm((BaseExpression*) Definitions_lookup(definitions, "a")));
-    printf("%s\n", FullForm((BaseExpression*) expr));
+    buf = FullForm((BaseExpression*) expr);
+    printf("%s\n", buf);
+    free(buf);
+    free(expr);
+    Definitions_free(definitions);
     return 0;
 }
