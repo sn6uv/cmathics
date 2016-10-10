@@ -33,25 +33,27 @@ char* FullForm_NormalExpression(NormalExpression* expr) {
     char* leaf_result;
     char** leaf_results;
     char* result;
-    uint32_t result_size;
+    uint32_t* leaf_sizes;
+    uint32_t head_size, result_size;
     uint32_t i, j;
 
     result = NULL;
 
     leaf_results = malloc(sizeof(char*) * expr->argc);
-    if (leaf_results == NULL) {
+    leaf_sizes = malloc(sizeof(uint32_t) * expr->argc);
+    if (leaf_results == NULL || leaf_sizes == NULL) {
         return NULL;
     }
-
-    result_size = 2 * (expr->argc); // "[" + ", " * (argc - 1) + "]"
-
 
     // format head
     head_result = FullForm((BaseExpression*) expr->head);
     if (head_result == NULL) {
         return NULL;
     }
-    result_size += strlen(head_result);
+    head_size = strlen(head_result);
+
+    // HEAD + "[" + ", " * (argc - 1) + "]"
+    result_size = head_size + 2 * (expr->argc);
 
     // format leaves
     for (i=0; i<expr->argc; i++) {
@@ -59,25 +61,33 @@ char* FullForm_NormalExpression(NormalExpression* expr) {
         if (leaf_result == NULL) {
             break;
         }
-        result_size += strlen(leaf_result);
         leaf_results[i] = leaf_result;
+        leaf_sizes[i] = strlen(leaf_result);
+        result_size += leaf_sizes[i];
     }
 
+    // construct result
     if (i == expr->argc) {
-        // FIXME rescanning buffers makes this O(n^2)
         result = malloc(result_size + 1);
         if (result) {
-            strcpy(result, head_result);
-            strcat(result, "[");
+            memcpy(result, head_result, head_size);
+            j = head_size; // position in result
+            memcpy(result + j, "[", 1);
+            j++;
 
             for (i=0; i<expr->argc; i++) {
-                strcat(result, leaf_results[i]);
+                memcpy(result + j, leaf_results[i], leaf_sizes[i]);
+                j += leaf_sizes[i];
                 if (i < expr->argc - 1) {
-                    strcat(result, ", ");
+                    memcpy(result + j, ", ", 2);
+                    j+=2;
                 }
             }
-            strcat(result, "]");
-            assert (i == expr->argc);
+            memcpy(result + j, "]", 2);    // also copy \0
+            j+=2;
+
+            assert(i == expr->argc);
+            assert(j == result_size + 1);
         }
     }
 
@@ -87,6 +97,7 @@ char* FullForm_NormalExpression(NormalExpression* expr) {
         free(leaf_results[j]);
     }
     free(leaf_results);
+    free(leaf_sizes);
 
     return result;
 }
