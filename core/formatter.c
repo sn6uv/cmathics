@@ -20,9 +20,9 @@ char* FullForm_Symbol(Definition* expr) {
 
 
 char* FullForm_MachineInteger(MachineInteger* expr) {
-    char* result = malloc(snprintf(NULL, 0, "%i", *expr->value) + 1);
+    char* result = malloc(snprintf(NULL, 0, "%i", expr->value) + 1);
     if (result) {
-        sprintf(result, "%i", *expr->value);
+        sprintf(result, "%i", expr->value);
     }
     return result;
 }

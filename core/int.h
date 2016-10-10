@@ -1,18 +1,18 @@
 #ifndef INT_H
 #define INT_H
+#include <gmp.h>
 #include "types.h"
 
 
 typedef struct {
     BaseExpression base;
-    int* value;
+    int value;
 } MachineInteger;
 
 
 typedef struct {
     BaseExpression base;
-    void* value;
-    double precision;
+    mpz_t value;
 } BigInteger;
 
 
@@ -29,5 +29,7 @@ typedef struct {
 } Rational;
 
 
-MachineInteger* MachineInteger_new(int* value);
+MachineInteger* MachineInteger_new(void);
+void MachineInteger_set(MachineInteger* p, int value);
+void MachineInteger_free(MachineInteger* p);
 #endif

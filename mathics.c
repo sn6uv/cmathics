@@ -19,12 +19,6 @@ int main() {
     expr->leaves[0] = (BaseExpression*) Definitions_lookup(definitions, "a");
     expr->leaves[1] = (BaseExpression*) Definitions_lookup(definitions, "b");
 
-    // printf("%i\n", definitions->count);
-    // printf("%s\n", FullForm((BaseExpression*) Definitions_lookup(definitions, "a")));
-
-    // buf = FullForm((BaseExpression*) expr);
-    // printf("%s\n", buf);
-
     Evaluation* evaluation = Evaluation_new(definitions, true);
     BaseExpression* result = evaluate_expression(evaluation, (BaseExpression*) expr);
 
@@ -34,5 +28,6 @@ int main() {
     free(buf);
     free(expr);
     Definitions_free(definitions);
+    Evaluation_free(evaluation);
     return 0;
 }

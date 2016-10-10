@@ -59,4 +59,5 @@ void send_message(Evaluation* evaluation, Definition* symbol, char* tag);
 BaseExpression* evaluate_expression(Evaluation* evaluation, BaseExpression* expression);
 
 Evaluation* Evaluation_new(Definitions* definitions, bool catch_interrupts);
+void Evaluation_free(Evaluation* evaluation);
 #endif

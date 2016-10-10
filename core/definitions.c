@@ -36,7 +36,7 @@ Definitions* Definitions_new(uint32_t size) {
 
     if (size < 1)
         return NULL;
-    
+
     d = (Definitions*) malloc(sizeof(Definitions));
     if (d == NULL)
         return NULL;
@@ -111,7 +111,7 @@ uint32_t Definitions_hash(const char* key, const uint32_t size) {
 Definition* Definitions_lookup(Definitions* d, const char* name) {
     uint32_t bin;
     Definition* result;
-    
+
     // linear probing
     bin = Definitions_hash(name, d->size);
 
@@ -137,6 +137,7 @@ int* get_int_value(Definitions* definitions, const char* name) {
     Definition* definition;
     NormalExpression* values;
     BaseExpression* value;
+    MachineInteger* int_value;
 
     definition = Definitions_lookup(definitions, name);
     if (definition == NULL) {
@@ -144,7 +145,9 @@ int* get_int_value(Definitions* definitions, const char* name) {
     }
 
     values = definition->own_values;
-    assert(values != NULL);
+    if (values == NULL) {
+        return NULL;
+    }
 
     if (values->argc < 1) {
         return NULL;
@@ -156,18 +159,18 @@ int* get_int_value(Definitions* definitions, const char* name) {
         return NULL;
     }
 
-    return ((MachineInteger*) value)->value;
+    int_value = (MachineInteger*) value;
+    return &(int_value->value);
 }
 
 
-NormalExpression* insert_rule(NormalExpression* rules, BaseExpression* rule) {
+void insert_rule(NormalExpression* rules, BaseExpression* rule) {
     // TODO
-    return NULL;
+    return;
 }
 
 
 int* set_int_value(Definitions* definitions, const char* name, int value) {
-    int* valuep;
     Definition* definition;
     MachineInteger* result;
 
@@ -176,16 +179,18 @@ int* set_int_value(Definitions* definitions, const char* name, int value) {
         return NULL;
     }
 
-    valuep = malloc(sizeof(int));
-    if (valuep == NULL) {
+    result = MachineInteger_new();
+    if (result == NULL) {
         return NULL;
     }
-    *valuep = value;
 
-    result = MachineInteger_new(valuep);
-    definition->own_values = insert_rule(definition->own_values, (BaseExpression*) result);
+    MachineInteger_set(result, value);
 
-    // assert(definition->own_values->argc > 0);
+    insert_rule(definition->own_values, (BaseExpression*) result);
 
-    return result->value;
+    if (definition->own_values->argc < 1) {
+        return NULL;
+    }
+
+    return &(result->value);
 }
