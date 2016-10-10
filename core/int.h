@@ -28,4 +28,6 @@ typedef struct {
     Integer* denom;
 } Rational;
 
+
+MachineInteger* MachineInteger_new(int* value);
 #endif

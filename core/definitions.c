@@ -2,10 +2,11 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <stdio.h>
 
 #include "definitions.h"
 #include "expression.h"
+#include "int.h"
 
 
 // initialise a definition entry
@@ -87,7 +88,9 @@ void Definitions_free(Definitions* d) {
         }
     }
     free(d->table);
-    free(d->EmptyList);
+    if (d->EmptyList != NULL) {
+        free(d->EmptyList);
+    }
     free(d);
 }
 
@@ -113,12 +116,13 @@ Definition* Definitions_lookup(Definitions* d, const char* name) {
     bin = Definitions_hash(name, d->size);
 
     while (d->table[bin].name != NULL && strcmp(d->table[bin].name, name) != 0) {
+        printf("%s\n", d->table[bin].name);
         bin = (bin + 1) % (d->size);
     }
 
     result = &(d->table[bin]);
     if (result->name == NULL) {
-        Definition_init(result, name, NULL);
+        Definition_init(result, name, d->EmptyList);
         d->count++;
     }
 
@@ -126,4 +130,62 @@ Definition* Definitions_lookup(Definitions* d, const char* name) {
         return NULL;
     }
     return result;
+}
+
+
+int* get_int_value(Definitions* definitions, const char* name) {
+    Definition* definition;
+    NormalExpression* values;
+    BaseExpression* value;
+
+    definition = Definitions_lookup(definitions, name);
+    if (definition == NULL) {
+        return NULL;
+    }
+
+    values = definition->own_values;
+    assert(values != NULL);
+
+    if (values->argc < 1) {
+        return NULL;
+    }
+
+    // take first own value
+    value = values->leaves[0];
+    if (value->type != MachineIntegerType) {
+        return NULL;
+    }
+
+    return ((MachineInteger*) value)->value;
+}
+
+
+NormalExpression* insert_rule(NormalExpression* rules, BaseExpression* rule) {
+    // TODO
+    return NULL;
+}
+
+
+int* set_int_value(Definitions* definitions, const char* name, int value) {
+    int* valuep;
+    Definition* definition;
+    MachineInteger* result;
+
+    definition = Definitions_lookup(definitions, name);
+    if (definition == NULL) {
+        return NULL;
+    }
+
+    valuep = malloc(sizeof(int));
+    if (valuep == NULL) {
+        return NULL;
+    }
+    *valuep = value;
+
+    result = MachineInteger_new(valuep);
+    definition->own_values = insert_rule(definition->own_values, (BaseExpression*) result);
+
+    // assert(definition->own_values->argc > 0);
+
+    return result->value;
 }

@@ -1,6 +1,5 @@
 #ifndef SYMTABLE_H
 #define SYMTABLE_H
-#include <stdbool.h>
 #include "types.h"
 #include "expression.h"
 
@@ -68,4 +67,6 @@ void Definitions_init(Definitions* d, Definitions* system_definitions);
 Definition* Definitions_lookup(Definitions* d, const char* name);
 uint32_t Definitions_hash(const char* key, const uint32_t size);    // exposed for testing
 
+int* get_int_value(Definitions* definitions, const char* name);
+int* set_int_value(Definitions* definitions, const char* name, int value);
 #endif
