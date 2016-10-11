@@ -30,6 +30,11 @@ typedef struct {
 
 
 MachineInteger* MachineInteger_new(void);
-void MachineInteger_set(MachineInteger* p, int value);
 void MachineInteger_free(MachineInteger* p);
+void MachineInteger_set(MachineInteger* p, int value);
+
+BigInteger* BigInteger_new(void);
+void BigInteger_free(BigInteger* p);
+void BigInteger_set_ui(BigInteger* p, unsigned long int op);
+void BigInteger_set_si(BigInteger* p, signed long int op);
 #endif
