@@ -3,5 +3,5 @@
 
 #include "types.h"
 
-
+bool MatchQ(const BaseExpression* pattern, const BaseExpression* expression);
 #endif

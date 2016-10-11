@@ -8,6 +8,7 @@
 #include "core/definitions.h"
 #include "core/formatter.h"
 #include "core/evaluation.h"
+#include "core/pattern.h"
 
 
 int main() {
@@ -25,6 +26,10 @@ int main() {
 
     buf = FullForm((BaseExpression*) result);
     printf("%s\n", buf);
+
+    if (MatchQ((BaseExpression*) expr, (BaseExpression*) expr)) {
+        printf("matches!\n");
+    }
 
     printf("height = %i\n", Expression_height((BaseExpression*) expr));
     free(buf);
