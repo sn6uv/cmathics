@@ -1,2 +1,3 @@
 *.o
 mathics
+tests/test_*.test

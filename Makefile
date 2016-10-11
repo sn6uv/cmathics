@@ -1,33 +1,32 @@
 CC=gcc
-CPP=g++
 FLAGS=-Wall -pedantic -std=c99 -g -I.
 LINKS=-lgmp -lmpfr
+
 DEPS = $(wildcard core/*.c)
-OBJ = $(patsubst %.c,%.o,$(wildcard core/*.c))
+OBJS = $(patsubst %.c,%.o,$(DEPS))
+
+CPP=g++
+TEST_FLAGS=-Wall -pedantic -g -I.
+TEST_LINKS=-lgtest
+
+TEST_DEPS = $(wildcard tests/*.cpp)
+TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))
+TESTS = $(patsubst %.cpp,%.test,$(TEST_DEPS))
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(FLAGS)
 
-mathics: $(OBJ) mathics.o
-	$(CC) -o $@ $^ $(CFLAGS) $(LINKS)
+%.o: %.cpp
+	$(CPP) -c -o $@ $< $(TEST_FLAGS)
+
+%.test: %.o $(OBJS)
+	$(CPP) -o $@ $^ $(TEST_LINKS) $(LINKS)
+
+mathics: $(OBJS) mathics.o
+	$(CC) -o $@ $^ $(FLAGS) $(LINKS)
     
-test: test_expression test_definitions test_stack
-	./test_expression
-	./test_definitions
-	./test_stack
-
-test_expression: test_expression.cpp $(OBJ)
-	$(CPP) -c test_expression.cpp -o test_expression.o -Wall -pedantic -g -I.
-	$(CPP) test_expression.o $(OBJ) -o test_expression -lgtest $(LINKS)
-
-test_definitions: test_definitions.cpp $(OBJ)
-	$(CPP) -c test_definitions.cpp -o test_definitions.o -Wall -pedantic -g -I.
-	$(CPP) test_definitions.o $(OBJ) -o test_definitions -lgtest $(LINKS)
-
-test_stack: test_stack.cpp core/data_structures/stack.o
-	$(CPP) -c test_stack.cpp -o test_stack.o -Wall -pedantic -g -I.
-	$(CPP) test_stack.o core/data_structures/stack.o -o test_stack -lgtest $(LINKS)
+test: $(TESTS)
+	$(foreach var,$(TESTS),./$(var);)
 
 clean:
-	rm -f mathics.o mathics
-	rm -f $(OBJ)
+	rm -f mathics $(OBJS) $(TEST_OBJS) $(TESTS)
