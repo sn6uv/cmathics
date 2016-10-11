@@ -1,3 +1,5 @@
+#ifndef STRING_H
+#define STRING_H
 #include "types.h"
 
 
@@ -6,3 +8,4 @@ typedef struct {
     char* value;
     uint32_t length;
 } String;
+#endif

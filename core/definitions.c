@@ -7,6 +7,7 @@
 #include "definitions.h"
 #include "expression.h"
 #include "int.h"
+#include "hash.h"
 
 
 // initialise a definition entry
@@ -62,7 +63,7 @@ void Definitions_init(Definitions* d, Definitions* system_definitions) {
 
     if (system_definitions == NULL) {   // this is the system definitions
         // add the `List` entry
-        bin = Definitions_hash("List", d->size);
+        bin = djb2("List") % (d->size);
         list_defn = &(d->table[bin]);
         assert(list_defn->name == NULL);
         Symbol_init(list_defn, "List", NULL);
@@ -70,7 +71,7 @@ void Definitions_init(Definitions* d, Definitions* system_definitions) {
 
         // construct common `List[]` for bootstrapping
         EmptyList = Expression_new(0);
-        EmptyList->head = (BaseExpression*) list_defn;
+        Expression_init(EmptyList, (BaseExpression*) list_defn, NULL);
     } else {
         EmptyList = system_definitions->EmptyList;
     }
@@ -95,28 +96,14 @@ void Definitions_free(Definitions* d) {
 }
 
 
-// djb2
-uint32_t Definitions_hash(const char* key, const uint32_t size) {
-    uint64_t hash;
-    uint32_t c;
-
-    hash = 5381;
-    while ((c = (uint32_t) *key++) != 0)
-        hash = (hash * 33 + c);
-
-    return (uint32_t) (hash % size);
-}
-
-
 Symbol* Definitions_lookup(Definitions* d, const char* name) {
     uint32_t bin;
     Symbol* result;
 
     // linear probing
-    bin = Definitions_hash(name, d->size);
+    bin = djb2(name) % (d->size);
 
     while (d->table[bin].name != NULL && strcmp(d->table[bin].name, name) != 0) {
-        printf("%s\n", d->table[bin].name);
         bin = (bin + 1) % (d->size);
     }
 

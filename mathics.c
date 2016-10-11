@@ -17,9 +17,14 @@ int main() {
     Definitions_init(definitions, NULL);  // System Definitions
 
     Expression* expr = Expression_new(2);
-    expr->head = (BaseExpression*) Definitions_lookup(definitions, "Plus");
-    expr->leaves[0] = (BaseExpression*) Definitions_lookup(definitions, "a");
-    expr->leaves[1] = (BaseExpression*) Definitions_lookup(definitions, "b");
+
+    BaseExpression* head = (BaseExpression*) Definitions_lookup(definitions, "Plus");
+    BaseExpression* la = (BaseExpression*) Definitions_lookup(definitions, "a");
+    BaseExpression* lb = (BaseExpression*) Definitions_lookup(definitions, "b");
+    BaseExpression* leaves[2];
+    leaves[0] = la;
+    leaves[1] = lb;
+    Expression_init(expr, head, leaves);
 
     Evaluation* evaluation = Evaluation_new(definitions, true);
     BaseExpression* result = Evaluate(evaluation, (BaseExpression*) expr);
@@ -32,6 +37,8 @@ int main() {
     }
 
     printf("height = %i\n", Expression_height((BaseExpression*) expr));
+    printf("hash = %lu\n", expr->hash);
+
     free(buf);
     free(expr);
     Definitions_free(definitions);
