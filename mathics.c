@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "core/misc.h"
 #include "core/expression.h"
 #include "core/definitions.h"
 #include "core/formatter.h"
@@ -25,6 +26,7 @@ int main() {
     buf = FullForm((BaseExpression*) result);
     printf("%s\n", buf);
 
+    printf("height = %i\n", Expression_height((BaseExpression*) expr));
     free(buf);
     free(expr);
     Definitions_free(definitions);
