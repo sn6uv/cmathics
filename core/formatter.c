@@ -10,7 +10,7 @@
 #include "formatter.h"
 
 
-char* FullForm_Symbol(Definition* expr) {
+char* FullForm_Symbol(Symbol* expr) {
     char* result = malloc(strlen(expr->name) + 1);
     if (result) {
         strcpy(result, expr->name);
@@ -28,7 +28,7 @@ char* FullForm_MachineInteger(MachineInteger* expr) {
 }
 
 
-char* FullForm_NormalExpression(NormalExpression* expr) {
+char* FullForm_Expression(Expression* expr) {
     char* head_result;
     char* leaf_result;
     char** leaf_results;
@@ -108,13 +108,13 @@ char* FullForm(BaseExpression* expr) {
 
     switch (expr->type) {
         case SymbolType:
-            result = FullForm_Symbol((Definition*) expr);
+            result = FullForm_Symbol((Symbol*) expr);
             break;
         case MachineIntegerType:
             result = FullForm_MachineInteger((MachineInteger*) expr);
             break;
-        case NormalExpressionType:
-            result = FullForm_NormalExpression((NormalExpression*) expr);
+        case ExpressionType:
+            result = FullForm_Expression((Expression*) expr);
             break;
         default:
             result = NULL;

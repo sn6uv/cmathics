@@ -6,13 +6,13 @@
 #include "expression.h"
 
 
-NormalExpression* NormalExpression_new(uint32_t argc) {
+Expression* Expression_new(uint32_t argc) {
     uint32_t hash;
     hash = 0;   // TODO
-    NormalExpression* p = (NormalExpression*) malloc(sizeof(NormalExpression) + argc * sizeof(void*));
+    Expression* p = (Expression*) malloc(sizeof(Expression) + argc * sizeof(void*));
     if (p) {
         p->base.ref = 0;
-        p->base.type = NormalExpressionType;
+        p->base.type = ExpressionType;
         p->hash = hash;
         p->argc = argc;
     }
@@ -20,6 +20,6 @@ NormalExpression* NormalExpression_new(uint32_t argc) {
 }
 
 
-void NormalExpression_free(NormalExpression* p) {
+void Expression_free(Expression* p) {
     free(p);
 }

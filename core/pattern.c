@@ -11,7 +11,7 @@
 #define TYPE_PAIR(X, Y) ((int) X) << 4 | (int) Y
 
 
-bool MatchQ_Symbol(const Definition* pattern, const Definition* expression) {
+bool MatchQ_Symbol(const Symbol* pattern, const Symbol* expression) {
     // compare as pointers: symbols are unique
     return pattern == expression;
 }
@@ -32,7 +32,7 @@ bool MatchQ_MachineReal(const MachineReal* pattern, const MachineReal* expressio
 }
 
 
-bool MatchQ_Expression_Expression(const NormalExpression* pattern, const NormalExpression* expression) {
+bool MatchQ_Expression_Expression(const Expression* pattern, const Expression* expression) {
     bool result;
     uint32_t i;
     result = false;
@@ -45,14 +45,14 @@ bool MatchQ_Expression_Expression(const NormalExpression* pattern, const NormalE
     return result;
 }
 
-bool MatchQ_Expression_Atom(const NormalExpression* pattern, const BaseExpression* expression) {
+bool MatchQ_Expression_Atom(const Expression* pattern, const BaseExpression* expression) {
     bool result;
-    Definition* head;
+    Symbol* head;
     char* head_name;
 
     result = false;
     if (pattern->head->type == SymbolType) {
-        head = (Definition*) pattern->head;
+        head = (Symbol*) pattern->head;
         head_name = head->name;
         if (strcmp(head_name, "System`Blank") == 0) {
             result = true;
@@ -68,7 +68,7 @@ bool MatchQ(const BaseExpression* pattern, const BaseExpression* expression) {
     bool result;
     switch (TYPE_PAIR(pattern->type, expression->type)) {
         case TYPE_PAIR(SymbolType, SymbolType):
-            result = MatchQ_Symbol((Definition*) pattern, (Definition*) expression);
+            result = MatchQ_Symbol((Symbol*) pattern, (Symbol*) expression);
             break;
         case TYPE_PAIR(MachineIntegerType, MachineIntegerType):
             result = MatchQ_MachineInteger((MachineInteger*) pattern, (MachineInteger*) expression);
@@ -76,18 +76,18 @@ bool MatchQ(const BaseExpression* pattern, const BaseExpression* expression) {
         case TYPE_PAIR(StringType, StringType):
             result = MatchQ_String((String*) pattern, (String*) expression);
             break;
-        case TYPE_PAIR(NormalExpressionType, NormalExpressionType):
-            result = MatchQ_Expression_Expression((NormalExpression*) pattern, (NormalExpression*) expression);
+        case TYPE_PAIR(ExpressionType, ExpressionType):
+            result = MatchQ_Expression_Expression((Expression*) pattern, (Expression*) expression);
             break;
-        case TYPE_PAIR(NormalExpressionType, MachineIntegerType):
-        case TYPE_PAIR(NormalExpressionType, BigIntegerType):
-        case TYPE_PAIR(NormalExpressionType, MachineRealType):
-        case TYPE_PAIR(NormalExpressionType, BigRealType):
-        case TYPE_PAIR(NormalExpressionType, RationalType):
-        case TYPE_PAIR(NormalExpressionType, ComplexType):
-        case TYPE_PAIR(NormalExpressionType, SymbolType):
-        case TYPE_PAIR(NormalExpressionType, StringType):
-            result = MatchQ_Expression_Atom((NormalExpression*) pattern, expression);
+        case TYPE_PAIR(ExpressionType, MachineIntegerType):
+        case TYPE_PAIR(ExpressionType, BigIntegerType):
+        case TYPE_PAIR(ExpressionType, MachineRealType):
+        case TYPE_PAIR(ExpressionType, BigRealType):
+        case TYPE_PAIR(ExpressionType, RationalType):
+        case TYPE_PAIR(ExpressionType, ComplexType):
+        case TYPE_PAIR(ExpressionType, SymbolType):
+        case TYPE_PAIR(ExpressionType, StringType):
+            result = MatchQ_Expression_Atom((Expression*) pattern, expression);
             break;
         default:
             // TODO throw error

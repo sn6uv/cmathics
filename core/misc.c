@@ -6,12 +6,12 @@ uint32_t Expression_height(BaseExpression* expression) {
     uint32_t result;
     uint32_t leaf_height;
     int i;
-    NormalExpression* nexpression;
+    Expression* nexpression;
 
     assert(expression != NULL);
     switch (expression->type) {
-        case NormalExpressionType:
-            nexpression = (NormalExpression*) expression;
+        case ExpressionType:
+            nexpression = (Expression*) expression;
             result = Expression_height(nexpression->head);
             for (i=0; i<nexpression->argc; i++) {
                 leaf_height = Expression_height(nexpression->leaves[i]);

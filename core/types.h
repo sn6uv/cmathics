@@ -10,7 +10,7 @@ typedef enum {
     BigRealType,
     RationalType,
     ComplexType,
-    NormalExpressionType,
+    ExpressionType,
     SymbolType,
     StringType,
     RawExpressionType

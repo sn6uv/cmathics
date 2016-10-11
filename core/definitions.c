@@ -10,7 +10,7 @@
 
 
 // initialise a definition entry
-void Definition_init(Definition* d, const char* name, NormalExpression* EmptyList) {
+void Symbol_init(Symbol* d, const char* name, Expression* EmptyList) {
     d->name = (char*) malloc(strlen(name) + 1);
     if (d != NULL) {
         strcpy(d->name, name);
@@ -41,7 +41,7 @@ Definitions* Definitions_new(uint32_t size) {
     if (d == NULL)
         return NULL;
 
-    d->table = (Definition*) malloc(sizeof(Definition) * size);
+    d->table = (Symbol*) malloc(sizeof(Symbol) * size);
     if (d->table == NULL)
         return NULL;
 
@@ -57,19 +57,19 @@ Definitions* Definitions_new(uint32_t size) {
 
 void Definitions_init(Definitions* d, Definitions* system_definitions) {
     uint32_t bin;
-    Definition* list_defn;
-    NormalExpression* EmptyList;
+    Symbol* list_defn;
+    Expression* EmptyList;
 
     if (system_definitions == NULL) {   // this is the system definitions
         // add the `List` entry
         bin = Definitions_hash("List", d->size);
         list_defn = &(d->table[bin]);
         assert(list_defn->name == NULL);
-        Definition_init(list_defn, "List", NULL);
+        Symbol_init(list_defn, "List", NULL);
         d->count++;
 
         // construct common `List[]` for bootstrapping
-        EmptyList = NormalExpression_new(0);
+        EmptyList = Expression_new(0);
         EmptyList->head = (BaseExpression*) list_defn;
     } else {
         EmptyList = system_definitions->EmptyList;
@@ -108,9 +108,9 @@ uint32_t Definitions_hash(const char* key, const uint32_t size) {
 }
 
 
-Definition* Definitions_lookup(Definitions* d, const char* name) {
+Symbol* Definitions_lookup(Definitions* d, const char* name) {
     uint32_t bin;
-    Definition* result;
+    Symbol* result;
 
     // linear probing
     bin = Definitions_hash(name, d->size);
@@ -122,7 +122,7 @@ Definition* Definitions_lookup(Definitions* d, const char* name) {
 
     result = &(d->table[bin]);
     if (result->name == NULL) {
-        Definition_init(result, name, d->EmptyList);
+        Symbol_init(result, name, d->EmptyList);
         d->count++;
     }
 
@@ -134,8 +134,8 @@ Definition* Definitions_lookup(Definitions* d, const char* name) {
 
 
 int* get_int_value(Definitions* definitions, const char* name) {
-    Definition* definition;
-    NormalExpression* values;
+    Symbol* definition;
+    Expression* values;
     BaseExpression* value;
     MachineInteger* int_value;
 
@@ -164,14 +164,14 @@ int* get_int_value(Definitions* definitions, const char* name) {
 }
 
 
-void insert_rule(NormalExpression* rules, BaseExpression* rule) {
+void insert_rule(Expression* rules, BaseExpression* rule) {
     // TODO
     return;
 }
 
 
 int* set_int_value(Definitions* definitions, const char* name, int value) {
-    Definition* definition;
+    Symbol* definition;
     MachineInteger* result;
 
     definition = Definitions_lookup(definitions, name);

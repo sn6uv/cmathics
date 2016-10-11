@@ -48,22 +48,22 @@ void set_line_no(Evaluation* evaluation, int value) {
 }
 
 
-void send_message(Evaluation* evaluation, Definition* symbol, char* tag) {
+void send_message(Evaluation* evaluation, Symbol* symbol, char* tag) {
 }
 
 
-BaseExpression* evaluate_NormalExpression(Evaluation* evaluation, NormalExpression* expression) {
+BaseExpression* Evaluate_Expression(Evaluation* evaluation, Expression* expression) {
     // TODO
     return (BaseExpression*) expression;
 }
 
 
-BaseExpression* evaluate_BaseExpression(Evaluation* evaluation, BaseExpression* expression) {
+BaseExpression* Evaluate_BaseExpression(Evaluation* evaluation, BaseExpression* expression) {
     return expression;
 }
 
 
-BaseExpression* evaluate_expression(Evaluation* evaluation, BaseExpression* expression) {
+BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expression) {
     BaseExpression* result;
     int line_no;
 
@@ -75,8 +75,8 @@ BaseExpression* evaluate_expression(Evaluation* evaluation, BaseExpression* expr
     line_no = get_line_no(evaluation);
 
     // perform evaluation
-    if (expression->type == NormalExpressionType) {
-        result = evaluate_NormalExpression(evaluation, (NormalExpression*) expression);
+    if (expression->type == ExpressionType) {
+        result = Evaluate_Expression(evaluation, (Expression*) expression);
     } else {
         result = expression;
     }

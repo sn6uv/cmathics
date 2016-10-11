@@ -29,18 +29,18 @@ TEST(Definitions, init) {
     EXPECT_EQ(d->size, 32);
     EXPECT_EQ(d->count, 1);
     ASSERT_TRUE(d->EmptyList != NULL);
-    Definition* l = Definitions_lookup(d, "List");
+    Symbol* l = Definitions_lookup(d, "List");
     ASSERT_TRUE(l != NULL);
     EXPECT_STREQ(l->name, "List");
     ASSERT_EQ(d->EmptyList->head->type, SymbolType);
-    EXPECT_EQ((Definition*) d->EmptyList->head, l);
+    EXPECT_EQ((Symbol*) d->EmptyList->head, l);
     // Definitions_free(d);
 }
 
 
 TEST(Definitions, lookup) {
     Definitions* d = Definitions_new(32);
-    Definition* s = Definitions_lookup(d, "abc");
+    Symbol* s = Definitions_lookup(d, "abc");
     ASSERT_TRUE(s != NULL);
     EXPECT_STREQ(s->name, "abc");
     EXPECT_EQ(d->size, 32);
@@ -51,8 +51,8 @@ TEST(Definitions, lookup) {
 
 TEST(Definitions, lookup_twice) {
     Definitions* d = Definitions_new(32);
-    Definition* s1 = Definitions_lookup(d, "abc");
-    Definition* s2 = Definitions_lookup(d, "abc");
+    Symbol* s1 = Definitions_lookup(d, "abc");
+    Symbol* s2 = Definitions_lookup(d, "abc");
     ASSERT_TRUE(s1 != NULL);
     ASSERT_TRUE(s2 != NULL);
     EXPECT_EQ(s1, s2);

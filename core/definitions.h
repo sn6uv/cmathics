@@ -37,34 +37,34 @@ typedef struct {
 typedef struct {
     BaseExpression base;
     char* name;
-    NormalExpression* own_values;
-    NormalExpression* sub_values;
-    NormalExpression* up_values;
-    NormalExpression* down_values;
-    NormalExpression* n_values;
-    NormalExpression* format_values;
-    NormalExpression* default_values;
-    NormalExpression* messages;
-    NormalExpression* options;
+    Expression* own_values;
+    Expression* sub_values;
+    Expression* up_values;
+    Expression* down_values;
+    Expression* n_values;
+    Expression* format_values;
+    Expression* default_values;
+    Expression* messages;
+    Expression* options;
     void *subcode;   // XXX
     void *upcode;    // XXX
     void *downcode;  // XXX
     Attributes attributes;
-} Definition;
+} Symbol;
 
 
 typedef struct {
     uint32_t size;
     uint32_t count;
-    NormalExpression* EmptyList;
-    Definition* table;
+    Expression* EmptyList;
+    Symbol* table;
 } Definitions;
 
 
 Definitions* Definitions_new(uint32_t size);
 void Definitions_free(Definitions* d);
 void Definitions_init(Definitions* d, Definitions* system_definitions);
-Definition* Definitions_lookup(Definitions* d, const char* name);
+Symbol* Definitions_lookup(Definitions* d, const char* name);
 uint32_t Definitions_hash(const char* key, const uint32_t size);    // exposed for testing
 
 int* get_int_value(Definitions* definitions, const char* name);

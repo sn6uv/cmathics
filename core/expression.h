@@ -11,9 +11,9 @@ typedef struct {
     uint32_t argc;
     BaseExpression* head;
     BaseExpression* leaves[];  // zero length array of pointers
-} NormalExpression;
+} Expression;
 
 
-NormalExpression* NormalExpression_new(uint32_t argc);
-void NormalExpression_free(NormalExpression* p);
+Expression* Expression_new(uint32_t argc);
+void Expression_free(Expression* p);
 #endif
