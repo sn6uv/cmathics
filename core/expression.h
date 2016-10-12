@@ -7,7 +7,7 @@
 typedef struct {
     BaseExpression base;
     uint64_t last_evaluated;
-    uint32_t hash;
+    uint64_t hash;
     uint32_t argc;
     BaseExpression* head;
     BaseExpression* leaves[];  // zero length array of pointers
