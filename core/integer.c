@@ -57,7 +57,7 @@ Integer* Integer_new_from_mpz(const mpz_t op) {
     BigInteger* b;
     Integer* result;
 
-    if (mpz_fits_slong_p(op) != 0) {
+    if (mpz_fits_slong_p(op)) {
         m = MachineInteger_new();
         if (m) {
             MachineInteger_set(m, mpz_get_si(op));
