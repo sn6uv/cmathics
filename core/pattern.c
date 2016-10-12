@@ -8,8 +8,6 @@
 #include "string.h"
 #include "real.h"
 
-#define TYPE_PAIR(X, Y) ((int) X) << 4 | (int) Y
-
 
 bool MatchQ_Symbol(const Symbol* pattern, const Symbol* expression) {
     // compare as pointers: symbols are unique

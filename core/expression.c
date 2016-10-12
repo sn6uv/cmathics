@@ -19,12 +19,14 @@ Expression* Expression_new(uint32_t argc) {
 }
 
 void Expression_init(Expression* expr, BaseExpression* head, BaseExpression** leaves) {
-    int i;
+    int32_t i;
     expr->head = head;
+    head->ref++;
     for (i=0; i<expr->argc; i++){
         expr->leaves[i] = leaves[i];
+        leaves[i]->ref++;
     }
-    expr->hash = Hash((BaseExpression*) expr);
+    expr->hash = Hash_Expression(expr);
 }
 
 void Expression_free(Expression* p) {

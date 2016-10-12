@@ -120,7 +120,7 @@ Symbol* Definitions_lookup(Definitions* d, const char* name) {
 }
 
 
-int* get_int_value(Definitions* definitions, const char* name) {
+int64_t* get_int_value(Definitions* definitions, const char* name) {
     Symbol* definition;
     Expression* values;
     BaseExpression* value;
@@ -157,7 +157,7 @@ void insert_rule(Expression* rules, BaseExpression* rule) {
 }
 
 
-int* set_int_value(Definitions* definitions, const char* name, int value) {
+int64_t* set_int_value(Definitions* definitions, const char* name, int64_t value) {
     Symbol* definition;
     MachineInteger* result;
 

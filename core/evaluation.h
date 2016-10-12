@@ -45,7 +45,7 @@ typedef enum {
 
 typedef struct {
     Definitions* definitions;
-    uint32_t recursion_depth;
+    int64_t recursion_depth;
     bool timeout;
     bool stopped;
     // Output* output;

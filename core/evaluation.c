@@ -30,9 +30,9 @@ void Evaluation_free(Evaluation* evaluation) {
 }
 
 
-int get_line_no(Evaluation* evaluation) {
-    int line_no;
-    int* line_nop = get_int_value(evaluation->definitions, "System`$Line");
+int64_t get_line_no(Evaluation* evaluation) {
+    int64_t line_no;
+    int64_t* line_nop = get_int_value(evaluation->definitions, "System`$Line");
     if (line_nop == NULL) {
         line_no = 1;
     } else {
@@ -42,7 +42,7 @@ int get_line_no(Evaluation* evaluation) {
 }
 
 
-void set_line_no(Evaluation* evaluation, int value) {
+void set_line_no(Evaluation* evaluation, int64_t value) {
     set_int_value(evaluation->definitions, "System`$Line", value);
     return;
 }
@@ -65,7 +65,7 @@ BaseExpression* Evaluate_BaseExpression(Evaluation* evaluation, BaseExpression* 
 
 BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expression) {
     BaseExpression* result;
-    int line_no;
+    int64_t line_no;
 
     // TODO $HistoryLength
 

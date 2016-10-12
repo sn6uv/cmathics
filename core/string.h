@@ -6,6 +6,11 @@
 typedef struct {
     BaseExpression base;
     char* value;
-    uint32_t length;
+    uint64_t length;
 } String;
+
+
+String* String_new(const uint64_t length);
+void String_set(String* s, const char* value);
+void String_free(String* p);
 #endif

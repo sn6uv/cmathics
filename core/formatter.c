@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 #include <assert.h>
 
@@ -20,9 +21,9 @@ char* FullForm_Symbol(Symbol* expr) {
 
 
 char* FullForm_MachineInteger(MachineInteger* expr) {
-    char* result = malloc(snprintf(NULL, 0, "%i", expr->value) + 1);
+    char* result = malloc(snprintf(NULL, 0, "%li", expr->value) + 1);
     if (result) {
-        sprintf(result, "%i", expr->value);
+        sprintf(result, "%li", expr->value);
     }
     return result;
 }
@@ -117,7 +118,7 @@ char* FullForm(BaseExpression* expr) {
             result = FullForm_Expression((Expression*) expr);
             break;
         default:
-            result = NULL;
+            assert(false);
     }
     return result;
 }

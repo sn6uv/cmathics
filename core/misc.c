@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "misc.h"
 
-uint32_t Expression_height(BaseExpression* expression) {
-    uint32_t result;
+int64_t Expression_height(BaseExpression* expression) {
+    int64_t result;
     uint32_t leaf_height;
-    int i;
+    int64_t i;
     Expression* nexpression;
 
     assert(expression != NULL);

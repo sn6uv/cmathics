@@ -7,7 +7,7 @@ OBJS = $(patsubst %.c,%.o,$(DEPS))
 
 CPP=g++
 TEST_FLAGS=-Wall -pedantic -g -I.
-TEST_LINKS=-lgtest
+TEST_LINKS=-lgtest -lgmpxx
 
 TEST_DEPS = $(wildcard tests/*.cpp)
 TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))

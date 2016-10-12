@@ -3,6 +3,9 @@
 #include <stdint.h>
 
 
+#define TYPE_PAIR(X, Y) ((int) X) << 4 | (int) Y
+
+
 typedef enum {
     MachineIntegerType,
     BigIntegerType,

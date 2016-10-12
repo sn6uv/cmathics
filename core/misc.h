@@ -3,6 +3,6 @@
 #include "types.h"
 #include "expression.h"
 
-uint32_t Expression_height(BaseExpression* expression);
+int64_t Expression_height(BaseExpression* expression);
 
 #endif
