@@ -69,8 +69,12 @@ void Rational_set(Rational* q, Integer* numer, Integer* denom) {
 void Rational_free(Rational* q) {
     assert(q != NULL);
     assert(q->base.ref == 0);
-    decref_free((BaseExpression*) q->numer);
-    decref_free((BaseExpression*) q->denom);
+    if (q->numer != NULL) {
+        decref_free((BaseExpression*) q->numer);
+    }
+    if (q->denom != NULL) {
+        decref_free((BaseExpression*) q->denom);
+    }
     free(q);
     return;
 }

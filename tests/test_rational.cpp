@@ -3,15 +3,18 @@
 #include <gmpxx.h>
 
 extern "C" {
-    #include "core/rational.h"
+    #include "core/types.h"
     #include "core/integer.h"
+    #include "core/rational.h"
 }
 
 
 TEST(Rational, Rational_new) {
     Rational* q;
     q = Rational_new();
-    EXPECT_TRUE(q != NULL);
+    ASSERT_TRUE(q != NULL);
+    EXPECT_EQ(q->base.type, RationalType);
+    EXPECT_EQ(q->base.ref, 0);
     Rational_free(q);
 }
 
@@ -31,8 +34,6 @@ TEST(Rational, Rational_set) {
     EXPECT_EQ(denom->base.ref, 1);
 
     Rational_free(q);
-    EXPECT_TRUE(numer == NULL);
-    EXPECT_TRUE(denom == NULL);
 }
 
 
