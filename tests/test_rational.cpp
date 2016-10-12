@@ -4,7 +4,7 @@
 
 extern "C" {
     #include "core/rational.h"
-    #include "core/int.h"
+    #include "core/integer.h"
 }
 
 

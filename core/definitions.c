@@ -6,7 +6,7 @@
 
 #include "definitions.h"
 #include "expression.h"
-#include "int.h"
+#include "integer.h"
 #include "hash.h"
 
 

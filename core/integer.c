@@ -2,7 +2,7 @@
 #include <assert.h>
 
 #include "types.h"
-#include "int.h"
+#include "integer.h"
 
 
 MachineInteger* MachineInteger_new(void) {

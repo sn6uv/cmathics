@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdbool.h>
 
-#include "int.h"
+#include "integer.h"
 #include "real.h"
 #include "rational.h"
 #include "expression.h"

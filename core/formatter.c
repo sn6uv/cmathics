@@ -7,7 +7,7 @@
 #include "types.h"
 #include "expression.h"
 #include "definitions.h"
-#include "int.h"
+#include "integer.h"
 #include "formatter.h"
 
 

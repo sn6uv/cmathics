@@ -4,7 +4,7 @@
 
 #include "types.h"
 #include "hash.h"
-#include "int.h"
+#include "integer.h"
 #include "real.h"
 #include "rational.h"
 #include "string.h"

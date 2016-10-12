@@ -4,8 +4,8 @@
 #include <gmp.h>
 
 #include "rational.h"
+#include "integer.h"
 #include "gc.h"
-#include "int.h"
 
 
 Rational* Rational_new(void) {

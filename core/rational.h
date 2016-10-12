@@ -1,7 +1,7 @@
 #ifndef RATIONAL_H
 #define RATIONAL_H
 
-#include "int.h"
+#include "integer.h"
 
 
 typedef struct {
