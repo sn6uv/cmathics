@@ -10,10 +10,14 @@
 #include "hash.h"
 
 
+// required for bootstrapping
+static Expression* EmptyList;
+
+
 // initialise a definition entry
-void Symbol_init(Symbol* d, const char* name, Expression* EmptyList) {
+void Symbol_init(Symbol* d, const char* name) {
     d->name = (char*) malloc(strlen(name) + 1);
-    if (d != NULL) {
+    if (d->name) {
         strcpy(d->name, name);
     }
     d->base.ref = 0;
@@ -59,25 +63,22 @@ Definitions* Definitions_new(uint32_t size) {
 void Definitions_init(Definitions* d, Definitions* system_definitions) {
     uint32_t bin;
     Symbol* list_defn;
-    Expression* EmptyList;
 
     if (system_definitions == NULL) {   // this is the system definitions
         // add the `List` entry
         bin = djb2("List") % (d->size);
         list_defn = &(d->table[bin]);
         assert(list_defn->name == NULL);
-        Symbol_init(list_defn, "List", NULL);
+        Symbol_init(list_defn, "List");
         d->count++;
 
         // construct common `List[]` for bootstrapping
-        EmptyList = Expression_new(0);
-        Expression_init(EmptyList, (BaseExpression*) list_defn, NULL);
-    } else {
-        EmptyList = system_definitions->EmptyList;
+        if (EmptyList == NULL) {
+            EmptyList = Expression_new(0);
+            Expression_init(EmptyList, (BaseExpression*) list_defn, NULL);
+        }
+        EmptyList->base.ref++;
     }
-
-    // assign EmptyList pointer
-    d->EmptyList = EmptyList;
 }
 
 
@@ -89,10 +90,11 @@ void Definitions_free(Definitions* d) {
         }
     }
     free(d->table);
-    if (d->EmptyList != NULL) {
-        free(d->EmptyList);
-    }
     free(d);
+    if (EmptyList != NULL && --EmptyList->base.ref == 0) {
+        Expression_free(EmptyList);
+        EmptyList = NULL;
+    }
 }
 
 
@@ -109,7 +111,7 @@ Symbol* Definitions_lookup(Definitions* d, const char* name) {
 
     result = &(d->table[bin]);
     if (result->name == NULL) {
-        Symbol_init(result, name, d->EmptyList);
+        Symbol_init(result, name);
         d->count++;
     }
 
@@ -117,67 +119,4 @@ Symbol* Definitions_lookup(Definitions* d, const char* name) {
         return NULL;
     }
     return result;
-}
-
-
-int64_t* get_int_value(Definitions* definitions, const char* name) {
-    Symbol* definition;
-    Expression* values;
-    BaseExpression* value;
-    MachineInteger* int_value;
-
-    definition = Definitions_lookup(definitions, name);
-    if (definition == NULL) {
-        return NULL;
-    }
-
-    values = definition->own_values;
-    if (values == NULL) {
-        return NULL;
-    }
-
-    if (values->argc < 1) {
-        return NULL;
-    }
-
-    // take first own value
-    value = values->leaves[0];
-    if (value->type != MachineIntegerType) {
-        return NULL;
-    }
-
-    int_value = (MachineInteger*) value;
-    return &(int_value->value);
-}
-
-
-void insert_rule(Expression* rules, BaseExpression* rule) {
-    // TODO
-    return;
-}
-
-
-int64_t* set_int_value(Definitions* definitions, const char* name, int64_t value) {
-    Symbol* definition;
-    MachineInteger* result;
-
-    definition = Definitions_lookup(definitions, name);
-    if (definition == NULL) {
-        return NULL;
-    }
-
-    result = MachineInteger_new();
-    if (result == NULL) {
-        return NULL;
-    }
-
-    MachineInteger_set(result, value);
-
-    insert_rule(definition->own_values, (BaseExpression*) result);
-
-    if (definition->own_values->argc < 1) {
-        return NULL;
-    }
-
-    return &(result->value);
 }

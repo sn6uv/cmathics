@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+#include <gmp.h>
 
 #include "core/misc.h"
 #include "core/expression.h"
@@ -9,6 +11,8 @@
 #include "core/formatter.h"
 #include "core/evaluation.h"
 #include "core/pattern.h"
+#include "core/integer.h"
+#include "core/rational.h"
 
 
 int main() {
@@ -36,12 +40,14 @@ int main() {
         printf("matches!\n");
     }
 
-    printf("height = %i\n", Expression_height((BaseExpression*) expr));
+    printf("height = %li\n", Expression_height((BaseExpression*) expr));
     printf("hash = %lu\n", expr->hash);
 
     free(buf);
     free(expr);
     Definitions_free(definitions);
     Evaluation_free(evaluation);
+
+
     return 0;
 }

@@ -5,23 +5,29 @@
 
 #include "rational.h"
 #include "integer.h"
-#include "gc.h"
 
 
-Rational* Rational_new(void) {
-    Rational* q = (Rational*) malloc(sizeof(Rational));
-    if (q) {
-        q->base.ref = 0;
-        q->base.type = RationalType;
-        q->numer = NULL;
-        q->denom = NULL;
-    }
-    return q;
+void Rational_init(Rational* q) {
+    q->base.ref = 0;
+    q->base.type = RationalType;
+    q->numer = NULL;
+    q->denom = NULL;
 }
 
 
 void Rational_set(Rational* q, Integer* numer, Integer* denom) {
+    q->numer = numer;
+    q->denom = denom;
+    numer->base.ref++;
+    denom->base.ref++;
+}
+
+
+void Rational_normalise(Rational* q) {
     mpz_t big_r, big_a, big_b;
+
+    Integer* numer = q->numer;
+    Integer* denom = q->denom;
 
     // convert to a / b
     switch(TYPE_PAIR(numer->base.type, denom->base.type)) {
@@ -58,23 +64,9 @@ void Rational_set(Rational* q, Integer* numer, Integer* denom) {
     mpz_divexact(big_b, big_b, big_r);
 
     // assign numer and denom
-    q->numer = Integer_new_from_mpz(big_a);
-    numer->base.ref++;
-    q->denom = Integer_new_from_mpz(big_b);
-    denom->base.ref++;
-    return;
-}
+    // FIXME // q->numer = Integer_new_from_mpz(big_a);
+    // FIXME // q->denom = Integer_new_from_mpz(big_b);
 
-
-void Rational_free(Rational* q) {
-    assert(q != NULL);
-    assert(q->base.ref == 0);
-    if (q->numer != NULL) {
-        decref_free((BaseExpression*) q->numer);
-    }
-    if (q->denom != NULL) {
-        decref_free((BaseExpression*) q->denom);
-    }
-    free(q);
+    // TODO update refs
     return;
 }

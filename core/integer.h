@@ -25,13 +25,9 @@ typedef union {
 } Integer;
 
 
-MachineInteger* MachineInteger_new(void);
-void MachineInteger_free(MachineInteger* p);
+void MachineInteger_init(MachineInteger* p);
 void MachineInteger_set(MachineInteger* p, const int64_t value);
 
-BigInteger* BigInteger_new(void);
-void BigInteger_free(BigInteger* p);
+void BigInteger_init(BigInteger* p);
 void BigInteger_set(BigInteger* p, const mpz_t value);
-
-Integer* Integer_new_from_mpz(const mpz_t op);
 #endif

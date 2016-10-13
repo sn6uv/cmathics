@@ -17,11 +17,11 @@ typedef struct {
 } BigReal;
 
 
-MachineReal* MachineReal_new(void);
-void MachineReal_set(MachineReal* p, double value);
-void MachineReal_free(MachineReal* p);
+void MachineReal_init(MachineReal* p);
+void MachineReal_set(MachineReal* p, const double value);
 
-BigReal* BigReal_new(mpfr_prec_t prec);
-void BigReal_set_d(BigReal* p, double value);
-void BigReal_free(BigReal* p);
+
+void BigReal_init(BigReal* p, const mpfr_prec_t prec);
+void BigReal_set(BigReal* p, const double value);
+void BigReal_clear(BigReal* p);
 #endif

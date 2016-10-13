@@ -13,7 +13,7 @@ TEST(Definitions, new32) {
     ASSERT_TRUE(d != NULL);
     EXPECT_EQ(d->size, 32);
     EXPECT_EQ(d->count, 0);
-    // Definitions_free(d);
+    Definitions_free(d);
 }
 
 
@@ -28,13 +28,10 @@ TEST(Definitions, init) {
     Definitions_init(d, NULL);  // System Definitions
     EXPECT_EQ(d->size, 32);
     EXPECT_EQ(d->count, 1);
-    ASSERT_TRUE(d->EmptyList != NULL);
     Symbol* l = Definitions_lookup(d, "List");
     ASSERT_TRUE(l != NULL);
     EXPECT_STREQ(l->name, "List");
-    ASSERT_EQ(d->EmptyList->head->type, SymbolType);
-    EXPECT_EQ((Symbol*) d->EmptyList->head, l);
-    // Definitions_free(d);
+    Definitions_free(d);
 }
 
 
@@ -45,7 +42,7 @@ TEST(Definitions, lookup) {
     EXPECT_STREQ(s->name, "abc");
     EXPECT_EQ(d->size, 32);
     EXPECT_EQ(d->count, 1);
-    // Definitions_free(d);
+    Definitions_free(d);
 }
 
 
@@ -58,7 +55,7 @@ TEST(Definitions, lookup_twice) {
     EXPECT_EQ(s1, s2);
     EXPECT_EQ(d->size, 32);
     EXPECT_EQ(d->count, 1);
-    // Definitions_free(d);
+    Definitions_free(d);
 }
 
 int main(int argc, char **argv) {

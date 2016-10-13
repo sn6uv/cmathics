@@ -56,7 +56,6 @@ typedef struct {
 typedef struct {
     uint32_t size;
     uint32_t count;
-    Expression* EmptyList;
     Symbol* table;
 } Definitions;
 

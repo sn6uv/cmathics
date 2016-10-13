@@ -11,7 +11,6 @@ typedef struct {
 } Rational;
 
 
-Rational* Rational_new(void);
-void Rational_free(Rational* q);
+void Rational_init(Rational* q);
 void Rational_set(Rational* r, Integer* numer, Integer* denom);
 #endif

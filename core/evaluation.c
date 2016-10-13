@@ -30,24 +30,6 @@ void Evaluation_free(Evaluation* evaluation) {
 }
 
 
-int64_t get_line_no(Evaluation* evaluation) {
-    int64_t line_no;
-    int64_t* line_nop = get_int_value(evaluation->definitions, "System`$Line");
-    if (line_nop == NULL) {
-        line_no = 1;
-    } else {
-        line_no = *line_nop + 1;
-    }
-    return line_no;
-}
-
-
-void set_line_no(Evaluation* evaluation, int64_t value) {
-    set_int_value(evaluation->definitions, "System`$Line", value);
-    return;
-}
-
-
 void send_message(Evaluation* evaluation, Symbol* symbol, char* tag) {
 }
 
@@ -65,14 +47,14 @@ BaseExpression* Evaluate_BaseExpression(Evaluation* evaluation, BaseExpression* 
 
 BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expression) {
     BaseExpression* result;
-    int64_t line_no;
+    // int64_t line_no;
 
     // TODO $HistoryLength
 
     // TODO Apply $Pre
 
     // TODO In[$Line]
-    line_no = get_line_no(evaluation);
+    // line_no = get_line_no(evaluation);
 
     // perform evaluation
     if (expression->type == ExpressionType) {
@@ -84,7 +66,7 @@ BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expression) {
     // TODO $Post
 
     // TODO Out[$Line]
-    line_no = get_line_no(evaluation); // might have changed
+    // line_no = get_line_no(evaluation); // might have changed
 
     // TODO $PrePrint
 
@@ -93,7 +75,7 @@ BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expression) {
     // TODO out callback
 
     // Increment $Line
-    set_line_no(evaluation, line_no + 1);
+    // set_line_no(evaluation, line_no + 1);
 
     // TODO clear aborts
 
