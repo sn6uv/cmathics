@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #include "integer.h"
 #include "real.h"
@@ -11,49 +12,43 @@
 #include "gc.h"
 
 
-// decrements the reference by one and frees if unreferenced
-void decref_free(BaseExpression* expr) {
-    expr->ref--;
-    assert(expr->ref >= 0);
-    if (expr->ref == 0) {
-        free(expr);
-    }
-}
+#define NSMALLNEGINTS 10
+#define NSMALLPOSINTS 1014
+static MachineInteger small_ints[NSMALLNEGINTS + NSMALLPOSINTS];
 
 
-void BaseExpression_free(BaseExpression* expr) {
-    switch (expr->type) {
-        case MachineIntegerType:
-            MachineInteger_free((MachineInteger*) expr);
-            break;
-        case BigIntegerType:
-            BigInteger_free((BigInteger*) expr);
-            break;
-        case MachineRealType:
-            MachineReal_free((MachineReal*) expr);
-            break;
-        case BigRealType:
-            BigReal_free((BigReal*) expr);
-            break;
-        case RationalType:
-            Rational_free((Rational*) expr);
-            break;
-        // case ComplexType:
-        //     Complex_free((Complex*) expr);
-        //     break;
-        case ExpressionType:
-            Expression_free((Expression*) expr);
-            break;
-        // case SymbolType:
-        //     Symbol_free((Symbol*) expr);
-        //     break;
-        case StringType:
-            String_free((String*) expr);
-            break;
-        // case RawExpressionType:
-        //     RawExpression_free((RawExpression*) expr);
-        //     break;
-        default:
-            assert(false);
+// initialise the GC
+void GC_Init(void) {
+    // init small ints
+    int64_t i;
+    for (i=0; i<(NSMALLNEGINTS + NSMALLPOSINTS); i++) {
+        MachineInteger_init(&small_ints[i]);
+        MachineInteger_set(&small_ints[i], i - NSMALLNEGINTS);
     }
+
+    // TODO expression cache?
+    return;
 }
+// 
+// 
+// MachineInteger* GC_Alloc_MachineInteger(int64_t value) {
+//     MachineInteger* result;
+//     if (value >= -NSMALLNEGINTS && value < NSMALLPOSINTS) {
+//         // initialised in GC_Init
+//         result = &small_ints[value + NSMALLNEGINTS];
+//     } else {
+//         result = Mathics_malloc(sizeof(MachineInteger));
+//         MachineInteger_set(result, value);
+//     }
+//     return result;
+// }
+// 
+// 
+// void GC_Free_MachineInteger(MachineInteger* p) {
+//     if (p->value >= -NSMALLNEGINTS && p->value < NSMALLPOSINTS) {
+//         // do nothing
+//     } else {
+//         free(p);
+//     }
+//     return;
+// }
