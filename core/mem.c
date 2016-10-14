@@ -41,7 +41,7 @@ BaseExpression* MemAlloc(uint32_t size) {
 }
 
 
-// XXX O(n) 
+// XXX O(n)
 void MemFree(BaseExpression* item) {
     uint32_t i;
     int found = 0;
@@ -61,4 +61,3 @@ void MemFree(BaseExpression* item) {
     }
     return;
 }
-

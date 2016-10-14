@@ -20,7 +20,7 @@ TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))
 
 mathics: $(OBJS) mathics.o
 	$(CC) -o $@ $^ $(FLAGS) $(LINKS)
-    
+
 test: $(TEST_OBJS) $(OBJS)
 	$(CPP) -o $@ $^ $(TEST_FLAGS) $(TEST_LINKS) $(LINKS)
 
