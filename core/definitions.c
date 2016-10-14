@@ -48,8 +48,10 @@ Definitions* Definitions_new(uint32_t size) {
         return NULL;
 
     d->table = (Symbol*) malloc(sizeof(Symbol) * size);
-    if (d->table == NULL)
+    if (d->table == NULL) {
+        free(d);
         return NULL;
+    }
 
     for (i = 0; i < size; i++)
         d->table[i].name = NULL;

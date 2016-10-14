@@ -43,12 +43,16 @@ char* FullForm_Expression(Expression* expr) {
     leaf_results = malloc(sizeof(char*) * expr->argc);
     leaf_sizes = malloc(sizeof(uint32_t) * expr->argc);
     if (leaf_results == NULL || leaf_sizes == NULL) {
+        free(leaf_results);
+        free(leaf_sizes);
         return NULL;
     }
 
     // format head
     head_result = FullForm((BaseExpression*) expr->head);
     if (head_result == NULL) {
+        free(leaf_results);
+        free(leaf_sizes);
         return NULL;
     }
     head_size = strlen(head_result);
