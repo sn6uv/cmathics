@@ -10,38 +10,33 @@ static struct TrackedExpressions {
     uint32_t count;
     uint32_t size;
     BaseExpression** objects;
-} tracked_expressions;
+} tracked;
 
 
 void MemResize(uint32_t size) {
-    // uint32_t i;
-    // new_objects = (BaseExpression**) malloc(sizeof(BaseExpression*) * size);
-    // for (i=0; i<tracked_expressions.count; i++);
-    //     new_objects[i] = tracked_expressions.objects[i];
-    // free(tracked_expressions.objects);
-    // tracked_expressions.objects = new_objects;
-    tracked_expressions.objects = realloc(tracked_expressions.objects, size);
-    // CHECK_MALLOC(tracked_expressions.objects)
-    tracked_expressions.size = size;
+    tracked.objects = realloc(tracked.objects, size);
+    tracked.size = size;
     return;
 }
 
 
 void MemInit(void) {
-    tracked_expressions.count = 0;
-    MemResize(1024);
+    tracked.count = 0;
+    tracked.objects = malloc(1024);
+    tracked.size = 1024;
+    return;
 }
 
 
 BaseExpression* MemAlloc(uint32_t size) {
     BaseExpression* result;
-    if (tracked_expressions.count == tracked_expressions.size) {
-        MemResize(tracked_expressions.size * 2);
+    if (tracked.count == tracked.size) {
+        MemResize(tracked.size * 2);
     }
     result = (BaseExpression*) malloc(size);
     assert(result);
-    tracked_expressions.objects[tracked_expressions.count] = result;
-    tracked_expressions.count++;
+    tracked.objects[tracked.count] = result;
+    tracked.count++;
     return result;
 }
 
@@ -50,20 +45,20 @@ BaseExpression* MemAlloc(uint32_t size) {
 void MemFree(BaseExpression* item) {
     uint32_t i;
     int found = 0;
-    for (i=0; i<tracked_expressions.count; i++) {
-        if (tracked_expressions.objects[i] == item) {
+    for (i=0; i<tracked.count; i++) {
+        if (tracked.objects[i] == item) {
             free(item);
-            // free(tracked_expressions.objects[i]);
-            tracked_expressions.count--;
-            tracked_expressions.objects[i] = tracked_expressions.objects[tracked_expressions.count];
-            tracked_expressions.objects[tracked_expressions.count] = NULL;
+            tracked.count--;
+            tracked.objects[i] = tracked.objects[tracked.count];
+            tracked.objects[tracked.count] = NULL;
             found = 1;
             break;
         }
     }
     assert(found);
-    if (tracked_expressions.count < tracked_expressions.size / 2) {
-        MemResize(tracked_expressions.size / 2);
+    if (tracked.count < tracked.size / 2) {
+        MemResize(tracked.size / 2);
     }
+    return;
 }
 

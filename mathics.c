@@ -14,7 +14,6 @@
 #include "core/integer.h"
 #include "core/rational.h"
 #include "core/mem.h"
-#include "core/refcounting.h"
 
 
 int main() {
@@ -32,8 +31,6 @@ int main() {
     leaves[1] = lb;
     Expression_set(expr, head, leaves);
 
-    RefInc((BaseExpression*) expr);
-
     Evaluation* evaluation = Evaluation_new(definitions, true);
     BaseExpression* result = Evaluate(evaluation, (BaseExpression*) expr);
 
@@ -48,9 +45,7 @@ int main() {
     printf("hash = %lu\n", expr->hash);
 
     free(buf);
-    assert(expr->base.ref == 1);
-    RefDec((BaseExpression*) expr);
-    // free(expr);
+    free(expr);
     Definitions_free(definitions);
     Evaluation_free(evaluation);
 
