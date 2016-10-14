@@ -8,6 +8,7 @@
 #include "expression.h"
 #include "integer.h"
 #include "hash.h"
+#include "mem.h"
 
 
 // required for bootstrapping
@@ -75,7 +76,7 @@ void Definitions_init(Definitions* d, Definitions* system_definitions) {
         // construct common `List[]` for bootstrapping
         if (EmptyList == NULL) {
             EmptyList = Expression_new(0);
-            Expression_init(EmptyList, (BaseExpression*) list_defn, NULL);
+            Expression_set(EmptyList, (BaseExpression*) list_defn, NULL);
         }
         EmptyList->base.ref++;
     }
@@ -92,7 +93,7 @@ void Definitions_free(Definitions* d) {
     free(d->table);
     free(d);
     if (EmptyList != NULL && --EmptyList->base.ref == 0) {
-        Expression_free(EmptyList);
+        MemFree((BaseExpression*) EmptyList);
         EmptyList = NULL;
     }
 }

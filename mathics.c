@@ -13,6 +13,7 @@
 #include "core/pattern.h"
 #include "core/integer.h"
 #include "core/rational.h"
+#include "core/mem.h"
 
 
 int main() {
@@ -28,7 +29,9 @@ int main() {
     BaseExpression* leaves[2];
     leaves[0] = la;
     leaves[1] = lb;
-    Expression_init(expr, head, leaves);
+    Expression_set(expr, head, leaves);
+
+    RefInc(expr);
 
     Evaluation* evaluation = Evaluation_new(definitions, true);
     BaseExpression* result = Evaluate(evaluation, (BaseExpression*) expr);
@@ -44,7 +47,9 @@ int main() {
     printf("hash = %lu\n", expr->hash);
 
     free(buf);
-    free(expr);
+    assert(expr->base.ref == 1);
+    RefDec(expr);
+    // free(expr);
     Definitions_free(definitions);
     Evaluation_free(evaluation);
 

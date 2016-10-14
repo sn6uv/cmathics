@@ -15,6 +15,6 @@ typedef struct {
 
 
 Expression* Expression_new(uint32_t argc);
-void Expression_init(Expression* expr, BaseExpression* head, BaseExpression** leaves);
-void Expression_free(Expression* p);
+void Expression_init(Expression* expr, uint32_t argc);
+void Expression_set(Expression* expr, BaseExpression* head, BaseExpression** leaves);
 #endif

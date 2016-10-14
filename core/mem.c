@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "mem.h"
 
@@ -48,7 +49,8 @@ void MemFree(BaseExpression* item) {
     uint32_t i;
     for (i=0; i<tracked_expressions.count; i++) {
         if (tracked_expressions.objects[i] == item) {
-            free(tracked_expressions.objects[i]);
+            free(item);
+            // free(tracked_expressions.objects[i]);
             tracked_expressions.objects[i] = tracked_expressions.objects[--tracked_expressions.count];
             break;
         }
