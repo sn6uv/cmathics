@@ -5,12 +5,13 @@
 
 typedef struct {
     BaseExpression base;
-    char* value;
     uint64_t length;
+    char value[];
 } String;
 
 
 String* String_new(const uint64_t length);
+void String_init(String* s, const uint64_t length);
 void String_set(String* s, const char* value);
 void String_free(String* p);
 #endif
