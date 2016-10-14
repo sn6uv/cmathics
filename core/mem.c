@@ -39,7 +39,9 @@ BaseExpression* MemAlloc(uint32_t size) {
         MemResize(tracked_expressions.size * 2);
     }
     result = (BaseExpression*) malloc(size);
-    // CHECK_MALLOC(result)
+    assert(result);
+    tracked_expressions.objects[tracked_expressions.count] = result;
+    tracked_expressions.count++;
     return result;
 }
 
@@ -47,14 +49,19 @@ BaseExpression* MemAlloc(uint32_t size) {
 // XXX O(n) 
 void MemFree(BaseExpression* item) {
     uint32_t i;
+    int found = 0;
     for (i=0; i<tracked_expressions.count; i++) {
         if (tracked_expressions.objects[i] == item) {
             free(item);
             // free(tracked_expressions.objects[i]);
-            tracked_expressions.objects[i] = tracked_expressions.objects[--tracked_expressions.count];
+            tracked_expressions.count--;
+            tracked_expressions.objects[i] = tracked_expressions.objects[tracked_expressions.count];
+            tracked_expressions.objects[tracked_expressions.count] = NULL;
+            found = 1;
             break;
         }
     }
+    assert(found);
     if (tracked_expressions.count < tracked_expressions.size / 2) {
         MemResize(tracked_expressions.size / 2);
     }
