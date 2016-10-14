@@ -57,8 +57,3 @@ TEST(Definitions, lookup_twice) {
     EXPECT_EQ(d->count, 1);
     Definitions_free(d);
 }
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

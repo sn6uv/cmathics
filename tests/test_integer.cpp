@@ -72,9 +72,3 @@ TEST(BigInteger, BigInteger_set__big) {
     mpz_clear(value);
     EXPECT_STREQ(mpz_get_str(NULL, 16, p.value), hex_value);
 }
-
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

@@ -34,9 +34,3 @@ TEST(Rational, Rational_set) {
     EXPECT_EQ(numer.base.ref, 1);
     EXPECT_EQ(denom.base.ref, 1);
 }
-
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

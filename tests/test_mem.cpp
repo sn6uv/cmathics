@@ -29,9 +29,3 @@ TEST(Mem, Symbol) {
     p->base.type = SymbolType;
     MemFree((BaseExpression*) p);
 }
-
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

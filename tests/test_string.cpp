@@ -31,9 +31,3 @@ TEST(String, String_set) {
     String_set(&p, "abcde");
     EXPECT_STREQ(p.value, "abcde");
 }
-
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-}

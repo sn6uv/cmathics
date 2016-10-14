@@ -11,7 +11,6 @@ TEST_LINKS=-lgtest -lgmpxx
 
 TEST_DEPS = $(wildcard tests/*.cpp)
 TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))
-TESTS = $(patsubst %.cpp,%.test,$(TEST_DEPS))
 
 %.o: %.c
 	$(CC) -c -o $@ $< $(FLAGS)
@@ -19,14 +18,14 @@ TESTS = $(patsubst %.cpp,%.test,$(TEST_DEPS))
 %.o: %.cpp
 	$(CPP) -c -o $@ $< $(TEST_FLAGS)
 
-%.test: %.o $(OBJS)
-	$(CPP) -o $@ $^ $(TEST_LINKS) $(LINKS)
-
 mathics: $(OBJS) mathics.o
 	$(CC) -o $@ $^ $(FLAGS) $(LINKS)
     
-test: $(TESTS)
-	$(foreach var,$(TESTS),./$(var);)
+test: $(TEST_OBJS) $(OBJS)
+	$(CPP) -o $@ $^ $(TEST_FLAGS) $(TEST_LINKS) $(LINKS)
+
+run_test: test
+	./test
 
 clean:
-	rm -f mathics $(OBJS) $(TEST_OBJS) $(TESTS)
+	rm -f mathics test $(OBJS) $(TEST_OBJS) mathics.o
