@@ -25,6 +25,7 @@ typedef union {
 } Integer;
 
 
+MachineInteger* MachineInteger_new(void);
 void MachineInteger_init(MachineInteger* p);
 void MachineInteger_set(MachineInteger* p, const int64_t value);
 

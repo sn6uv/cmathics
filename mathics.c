@@ -14,6 +14,7 @@
 #include "core/integer.h"
 #include "core/rational.h"
 #include "core/mem.h"
+#include "core/arithmetic.h"
 
 
 int main() {
@@ -33,6 +34,8 @@ int main() {
 
     Evaluation* evaluation = Evaluation_new(definitions, true);
     BaseExpression* result = Evaluate(evaluation, (BaseExpression*) expr);
+
+    Eval_Plus(expr);
 
     buf = FullForm((BaseExpression*) result);
     printf("%s\n", buf);
