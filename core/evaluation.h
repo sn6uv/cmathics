@@ -50,7 +50,7 @@ typedef struct {
     bool stopped;
     // Output* output;
     bool catch_interrupts;
-    EvaluationInterrupt* interrupt;
+    EvaluationInterrupt interrupt;
     Out* out;
 } Evaluation;
 
