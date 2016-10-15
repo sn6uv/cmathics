@@ -1,13 +1,13 @@
 CC=gcc
 FLAGS=-Wall -pedantic -std=c99 -g -I.
-LINKS=-lgmp -lmpfr
+LINKS=-lgmp -lmpfr -lm
 
 DEPS = $(wildcard core/*.c)
 OBJS = $(patsubst %.c,%.o,$(DEPS))
 
 CPP=g++
 TEST_FLAGS=-Wall -pedantic -g -I.
-TEST_LINKS=-lgtest -lgmpxx
+TEST_LINKS=-lgtest -lgmpxx -lm
 
 TEST_DEPS = $(wildcard tests/*.cpp)
 TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))
