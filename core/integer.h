@@ -29,6 +29,9 @@ MachineInteger* MachineInteger_new(void);
 void MachineInteger_init(MachineInteger* p);
 void MachineInteger_set(MachineInteger* p, const int64_t value);
 
+BigInteger* BigInteger_new(void);
 void BigInteger_init(BigInteger* p);
 void BigInteger_set(BigInteger* p, const mpz_t value);
+
+Integer* mpz_to_Integer(mpz_t value);
 #endif
