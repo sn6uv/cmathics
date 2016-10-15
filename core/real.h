@@ -21,6 +21,7 @@ typedef struct {
 
 void MachineReal_init(MachineReal* p);
 void MachineReal_set(MachineReal* p, const double value);
+MachineReal* MachineReal_from_d(const double value);
 
 
 void BigReal_init(BigReal* p, const double prec);

@@ -26,6 +26,13 @@ TEST(MachineReal, MachineReal_set) {
 }
 
 
+TEST(MachineReal, MachineReal_from_d) {
+    MachineReal* p = MachineReal_from_d(1.5);
+    EXPECT_EQ(p->base.type, MachineRealType);
+    EXPECT_EQ(p->base.ref, 0);
+    EXPECT_EQ(p->value, 1.5);
+}
+
 TEST(BigReal, BigReal_init) {
     BigReal p;
     BigReal_init(&p, 123.5);
