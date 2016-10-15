@@ -14,23 +14,18 @@ TEST(Rational, Rational_init) {
     Rational_init(&q);
     EXPECT_EQ(q.base.type, RationalType);
     EXPECT_EQ(q.base.ref, 0);
-    EXPECT_TRUE(q.numer == NULL);
-    EXPECT_TRUE(q.denom == NULL);
+    Rational_clear(&q);
 }
 
 TEST(Rational, Rational_set) {
-    Rational* q;
-    q = (Rational*) malloc(sizeof(Rational));
-    MachineInteger numer;
-    MachineInteger denom;
-    Rational_init(q);
-    MachineInteger_init(&numer);
-    MachineInteger_init(&denom);
-    MachineInteger_set(&numer, 5);
-    MachineInteger_set(&denom, 7);
+    Rational q;
+    Rational_init(&q);
+    mpq_t value;
 
-    Rational_set(q, (Integer*) &numer, (Integer*) &denom);
+    mpq_init(value);
+    mpq_set_str(value, "5/7", 10);
 
-    EXPECT_EQ(numer.base.ref, 1);
-    EXPECT_EQ(denom.base.ref, 1);
+    Rational_set(&q, value);
+    EXPECT_EQ(mpq_cmp(q.value, value), 0);
+    Rational_clear(&q);
 }
