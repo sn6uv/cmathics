@@ -19,12 +19,14 @@
 
 int main() {
     char* buf;
+    Symbol* plus_symbol;
     Definitions* definitions = Definitions_new(64);
     Definitions_init(definitions, NULL);  // System Definitions
 
     Expression* expr = Expression_new(2);
+    plus_symbol = Definitions_lookup(definitions, "Plus");
 
-    BaseExpression* head = (BaseExpression*) Definitions_lookup(definitions, "Plus");
+    BaseExpression* head = (BaseExpression*) plus_symbol;
     BaseExpression* la = (BaseExpression*) Definitions_lookup(definitions, "a");
     BaseExpression* lb = (BaseExpression*) Definitions_lookup(definitions, "b");
     BaseExpression* leaves[2];
@@ -35,7 +37,7 @@ int main() {
     Evaluation* evaluation = Evaluation_new(definitions, true);
     BaseExpression* result = Evaluate(evaluation, (BaseExpression*) expr);
 
-    Eval_Plus(expr);
+    plus_symbol->down_code = _Plus;
 
     buf = FullForm((BaseExpression*) result);
     printf("%s\n", buf);

@@ -32,6 +32,9 @@ void Symbol_init(Symbol* d, const char* name) {
     d->default_values = EmptyList;
     d->messages = EmptyList;
     d->options = EmptyList;
+    d->sub_code = NULL;
+    d->up_code = NULL;
+    d->down_code = NULL;
     return;
 }
 

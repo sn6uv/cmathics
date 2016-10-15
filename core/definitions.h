@@ -4,6 +4,9 @@
 #include "expression.h"
 
 
+// c functions used for builtin evaluation
+typedef BaseExpression* (CFunction)(Expression*);
+
 
 typedef struct {
     // pattern matching attributes
@@ -46,9 +49,9 @@ typedef struct {
     Expression* default_values;
     Expression* messages;
     Expression* options;
-    void *subcode;   // XXX
-    void *upcode;    // XXX
-    void *downcode;  // XXX
+    CFunction *sub_code;
+    CFunction *up_code;
+    CFunction *down_code;
     Attributes attributes;
 } Symbol;
 
