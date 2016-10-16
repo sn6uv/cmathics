@@ -39,7 +39,7 @@ Integer* add_Integers(Expression* expr) {
         }
     }
 
-    return_value = mpz_to_Integer(result);
+    return_value = Integer_from_mpz(result);
     mpz_clear(result);
     return return_value;
 }

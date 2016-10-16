@@ -74,25 +74,25 @@ TEST(BigInteger, BigInteger_set__big) {
 }
 
 
-TEST(mpz_to_Integer, MachineInteger) {
+TEST(Integer_from_mpz, MachineInteger) {
     Integer* result;
     mpz_t value;
     mpz_init_set_si(value, 5);
-    result = mpz_to_Integer(value);
+    result = Integer_from_mpz(value);
     ASSERT_EQ(result->base.type, MachineIntegerType);
     EXPECT_EQ(((MachineInteger*) result)->value, 5);
     // MachineInteger_free(result);
 }
 
 
-TEST(mpz_to_Integer, BigInteger) {
+TEST(Integer_from_mpz, BigInteger) {
     Integer* result;
     mpz_t value;
     const char* hex_value = "f752d912b1bd0ed02b0632469e0bf641ca52f36d0b4cbda9c1051ff2975b515fce7b0c9";
     mpz_init_set_si(value, 41);
     mpz_pow_ui(value, value, 53);  // overflows 64bit int for sure
 
-    result = mpz_to_Integer(value);
+    result = Integer_from_mpz(value);
 
     ASSERT_EQ(result->base.type, BigIntegerType);
     EXPECT_STREQ(mpz_get_str(NULL, 16, ((BigInteger*) result)->value), hex_value);

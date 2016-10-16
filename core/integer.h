@@ -33,5 +33,5 @@ BigInteger* BigInteger_new(void);
 void BigInteger_init(BigInteger* p);
 void BigInteger_set(BigInteger* p, const mpz_t value);
 
-Integer* mpz_to_Integer(mpz_t value);
+Integer* Integer_from_mpz(const mpz_t value);
 #endif

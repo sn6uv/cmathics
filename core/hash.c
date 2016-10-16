@@ -8,6 +8,7 @@
 #include "real.h"
 #include "rational.h"
 #include "string.h"
+#include "mem.h"
 
 
 uint64_t djb2(const char* str) {
@@ -64,9 +65,17 @@ uint64_t Hash_BigReal(const BigReal* expression) {
 uint64_t Hash_Rational(const Rational* expression) {
     // hash ("Rational", numer, denom)
     uint64_t seed = 0;
+    BaseExpression* numer;
+    BaseExpression* denom;
+    numer = (BaseExpression*) Rational_numer(expression);
+    denom = (BaseExpression*) Rational_denom(expression);
+
     seed = hash_combine(seed, djb2("Rational"));
-    seed = hash_combine(seed, Hash((BaseExpression*) expression->numer));
-    seed = hash_combine(seed, Hash((BaseExpression*) expression->denom));
+    seed = hash_combine(seed, Hash(numer));
+    seed = hash_combine(seed, Hash(denom));
+
+    MemFree(numer);
+    MemFree(denom);
     return seed;
 }
 

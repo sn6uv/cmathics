@@ -46,18 +46,16 @@ void BigInteger_set(BigInteger* p, const mpz_t op) {
 
 
 // convert mpz to Integer
-Integer* mpz_to_Integer(mpz_t value) {
+Integer* Integer_from_mpz(const mpz_t value) {
     MachineInteger* machine_result;
     BigInteger* big_result;
 
     if (mpz_fits_slong_p(value)) {
         machine_result = MachineInteger_new();
-        MachineInteger_init(machine_result);
         MachineInteger_set(machine_result, mpz_get_si(value));
         return (Integer*) machine_result;
     } else {
         big_result = BigInteger_new();
-        BigInteger_init(big_result);
         BigInteger_set(big_result, value);
         return (Integer*) big_result;
     }

@@ -17,6 +17,7 @@ TEST(Rational, Rational_init) {
     Rational_clear(&q);
 }
 
+
 TEST(Rational, Rational_set) {
     Rational q;
     Rational_init(&q);
@@ -27,5 +28,18 @@ TEST(Rational, Rational_set) {
 
     Rational_set(&q, value);
     EXPECT_EQ(mpq_cmp(q.value, value), 0);
+    Rational_clear(&q);
+}
+
+TEST(Rational, Rational_numer) {
+    Rational q;
+    Integer* value;
+
+    Rational_init(&q);
+    mpq_set_si(q.value, 5, 7);
+
+    value = Rational_numer(&q);
+    EXPECT_EQ(value->base.type, MachineIntegerType);
+    EXPECT_EQ(value->machine.value, 5);
     Rational_clear(&q);
 }
