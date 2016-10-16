@@ -6,6 +6,7 @@
 #include "definitions.h"
 #include "expression.h"
 #include "evaluation.h"
+#include "pattern.h"
 
 
 Evaluation* Evaluation_new(Definitions* definitions, bool catch_interrupts) {
@@ -145,7 +146,7 @@ BaseExpression* DoEvaluate_Expression(Expression* expr) {
 
         // if the CFunction is absent or returns NULL then apply downvalues
         for (i = 0; i < head_symbol->down_values->argc; i++) {
-            child_result = DoReplace(expr, head_symbol->down_values->leaves[i]);
+            child_result = DoReplace((BaseExpression*) expr, head_symbol->down_values->leaves[i]);
             if (child_result != NULL) {
                 return child_result;
             }
