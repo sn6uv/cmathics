@@ -35,12 +35,25 @@ void send_message(Evaluation* evaluation, Symbol* symbol, char* tag) {
 }
 
 
-BaseExpression* CloneIfSingleton(BaseExpression* expr) {
-    assert(expr->ref <= 1);
-    return expr;
+BaseExpression* DoEvaluate(BaseExpression* query_expr);
+
+
+// return NULL if nothing changed
+BaseExpression* DoEvaluate_Symbol(Symbol* symb) {
+    uint32_t i;
+    Expression* own_values;
+    BaseExpression* result;
+
+    // try all the own values until one applies
+    result = NULL;
+    own_values = symb->own_values;
+    for (i = 0; i < own_values->argc; i++) {
+        result = DoReplace((BaseExpression*) symb, own_values->leaves[i]);
+        if (result != NULL) break;
+    }
+    return result;
 }
 
-BaseExpression* DoEvaluate(BaseExpression* query_expr);
 
 // returns NULL if nothing changed
 BaseExpression* DoEvaluate_Expression(Expression* expr) {
@@ -131,28 +144,34 @@ BaseExpression* DoEvaluate_Expression(Expression* expr) {
         }
 
         // if the CFunction is absent or returns NULL then apply downvalues
-        // from the list
-        // TODO
+        for (i = 0; i < head_symbol->down_values->argc; i++) {
+            child_result = DoReplace(expr, head_symbol->down_values->leaves[i]);
+            if (child_result != NULL) {
+                return child_result;
+            }
+        }
     }
 
     return result;
 }
 
 
-BaseExpression* DoEvaluate(BaseExpression* query_expr) {
-    BaseExpression* expr;
+BaseExpression* DoEvaluate(BaseExpression* expr) {
     BaseExpression* result;
-
-    expr = CloneIfSingleton(query_expr);
 
     if (expr->type == ExpressionType) {
         result = DoEvaluate_Expression((Expression*) expr);
+    } else if (expr->type == SymbolType) {
+        result = DoEvaluate_Symbol((Symbol*) expr);
+    } else {
+        // atomic expressions remain unchanged
+        result = NULL;
     }
     return result;
 }
 
 
-BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expression) {
+BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expr) {
     BaseExpression* result;
     // int64_t line_no;
 
@@ -164,7 +183,7 @@ BaseExpression* Evaluate(Evaluation* evaluation, BaseExpression* expression) {
     // line_no = get_line_no(evaluation);
 
     // perform evaluation
-    result = DoEvaluate(expression);
+    result = DoEvaluate(expr);
 
     // TODO $Post
 

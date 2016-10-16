@@ -9,48 +9,48 @@
 #include "real.h"
 
 
-bool MatchQ_Symbol(const Symbol* pattern, const Symbol* expression) {
+bool MatchQ_Symbol(Symbol* expr, Symbol* patt) {
     // compare as pointers: symbols are unique
-    return pattern == expression;
+    return expr == patt;
 }
 
 
-bool MatchQ_MachineInteger(const MachineInteger* pattern, const MachineInteger* expression) {
-    return pattern->value == expression->value;
+bool MatchQ_MachineInteger(MachineInteger* expr, MachineInteger* patt) {
+    return expr->value == patt->value;
 }
 
 
-bool MatchQ_String(const String* pattern, const String* expression) {
-    return strcmp(pattern->value, expression->value) == 0;
+bool MatchQ_String(String* expr, String* patt) {
+    return strcmp(expr->value, patt->value) == 0;
 }
 
 
-bool MatchQ_MachineReal(const MachineReal* pattern, const MachineReal* expression) {
-    return pattern->value == expression->value;
+bool MatchQ_MachineReal(MachineReal* expr, MachineReal* patt) {
+    return expr->value == patt->value;
 }
 
 
-bool MatchQ_Expression_Expression(const Expression* pattern, const Expression* expression) {
+bool MatchQ_Expression_Expression(Expression* expr, Expression* patt) {
     bool result;
     uint32_t i;
     result = false;
-    if (pattern->argc == expression->argc) {
-        result = MatchQ(pattern->head, expression->head);
-        for (i=0; (i<expression->argc) && result; i++) {
-            result = result && MatchQ(pattern->leaves[i], expression->leaves[i]);
+    if (expr->argc == patt->argc) {
+        result = MatchQ(expr->head, patt->head);
+        for (i=0; (i<expr->argc) && result; i++) {
+            result = result && MatchQ(expr->leaves[i], patt->leaves[i]);
         }
     }
     return result;
 }
 
-bool MatchQ_Expression_Atom(const Expression* pattern, const BaseExpression* expression) {
+bool MatchQ_Expression_Atom(BaseExpression* expr, Expression* patt) {
     bool result;
     Symbol* head;
     char* head_name;
 
     result = false;
-    if (pattern->head->type == SymbolType) {
-        head = (Symbol*) pattern->head;
+    if (patt->head->type == SymbolType) {
+        head = (Symbol*) patt->head;
         head_name = head->name;
         if (strcmp(head_name, "System`Blank") == 0) {
             result = true;
@@ -62,34 +62,40 @@ bool MatchQ_Expression_Atom(const Expression* pattern, const BaseExpression* exp
 
 
 // Does expression match the pattern?
-bool MatchQ(const BaseExpression* pattern, const BaseExpression* expression) {
+bool MatchQ(BaseExpression* expr, BaseExpression* patt) {
     bool result;
-    switch (TYPE_PAIR(pattern->type, expression->type)) {
+    switch (TYPE_PAIR(expr->type, patt->type)) {
         case TYPE_PAIR(SymbolType, SymbolType):
-            result = MatchQ_Symbol((Symbol*) pattern, (Symbol*) expression);
+            result = MatchQ_Symbol((Symbol*) expr, (Symbol*) patt);
             break;
         case TYPE_PAIR(MachineIntegerType, MachineIntegerType):
-            result = MatchQ_MachineInteger((MachineInteger*) pattern, (MachineInteger*) expression);
+            result = MatchQ_MachineInteger((MachineInteger*) expr, (MachineInteger*) patt);
             break;
         case TYPE_PAIR(StringType, StringType):
-            result = MatchQ_String((String*) pattern, (String*) expression);
+            result = MatchQ_String((String*) expr, (String*) patt);
             break;
         case TYPE_PAIR(ExpressionType, ExpressionType):
-            result = MatchQ_Expression_Expression((Expression*) pattern, (Expression*) expression);
+            result = MatchQ_Expression_Expression((Expression*) expr, (Expression*) patt);
             break;
-        case TYPE_PAIR(ExpressionType, MachineIntegerType):
-        case TYPE_PAIR(ExpressionType, BigIntegerType):
-        case TYPE_PAIR(ExpressionType, MachineRealType):
-        case TYPE_PAIR(ExpressionType, BigRealType):
-        case TYPE_PAIR(ExpressionType, RationalType):
-        case TYPE_PAIR(ExpressionType, ComplexType):
-        case TYPE_PAIR(ExpressionType, SymbolType):
-        case TYPE_PAIR(ExpressionType, StringType):
-            result = MatchQ_Expression_Atom((Expression*) pattern, expression);
+        case TYPE_PAIR(MachineIntegerType, ExpressionType):
+        case TYPE_PAIR(BigIntegerType, ExpressionType):
+        case TYPE_PAIR(MachineRealType, ExpressionType):
+        case TYPE_PAIR(BigRealType, ExpressionType):
+        case TYPE_PAIR(RationalType, ExpressionType):
+        case TYPE_PAIR(ComplexType, ExpressionType):
+        case TYPE_PAIR(SymbolType, ExpressionType):
+        case TYPE_PAIR(StringType, ExpressionType):
+            result = MatchQ_Expression_Atom(expr, (Expression*) patt);
             break;
         default:
             // TODO throw error
             result = false;
     }
     return result;
+}
+
+
+BaseExpression* DoReplace(BaseExpression* expr, BaseExpression* patt) {
+    // TODO
+    return NULL;
 }
