@@ -7,7 +7,7 @@ OBJS = $(patsubst %.c,%.o,$(DEPS))
 
 CPP=g++
 TEST_FLAGS=-Wall -pedantic -g -I.
-TEST_LINKS=-lgtest -lgmpxx -lm
+TEST_LINKS=-lgtest -lgmpxx -lm -lgmp -lmpfr
 
 TEST_DEPS = $(wildcard tests/*.cpp)
 TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))
@@ -22,7 +22,7 @@ mathics: $(OBJS) mathics.o
 	$(CC) -o $@ $^ $(FLAGS) $(LINKS)
 
 test: $(TEST_OBJS) $(OBJS)
-	$(CPP) -o $@ $^ $(TEST_FLAGS) $(TEST_LINKS) $(LINKS)
+	$(CPP) -o $@ $^ $(TEST_FLAGS) $(TEST_LINKS)
 
 run_test: test
 	./test
