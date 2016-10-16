@@ -35,19 +35,20 @@ int main() {
     Expression_set(expr, head, leaves);
 
     Evaluation* evaluation = Evaluation_new(definitions, true);
-    BaseExpression* result = Evaluate(evaluation, (BaseExpression*) expr);
-
     plus_symbol->down_code = _Plus;
+
+    buf = FullForm((BaseExpression*) expr);
+    printf("%s\n", buf);
+
+    printf("evaluating...\n");
+    BaseExpression* result = Evaluate(evaluation, (BaseExpression*) expr);
+    printf("done\n");
 
     buf = FullForm((BaseExpression*) result);
     printf("%s\n", buf);
 
-    if (MatchQ((BaseExpression*) expr, (BaseExpression*) expr)) {
-        printf("matches!\n");
-    }
-
-    printf("height = %li\n", Expression_height((BaseExpression*) expr));
-    printf("hash = %lu\n", expr->hash);
+    // printf("height = %li\n", Expression_height((BaseExpression*) expr));
+    // printf("hash = %lu\n", expr->hash);
 
     free(buf);
     free(expr);

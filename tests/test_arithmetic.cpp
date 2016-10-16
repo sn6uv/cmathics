@@ -34,7 +34,7 @@ TEST(Arithmetic, Plus) {
     leaves[1] = (BaseExpression*) &b;
     Expression_set(plus_expr, plus_head, leaves);
 
-    BaseExpression* result_expr = Eval_Plus(plus_expr);
+    BaseExpression* result_expr = _Plus(plus_expr);
     ASSERT_EQ(result_expr->type, MachineIntegerType);
     c = (MachineInteger*) result_expr;
     EXPECT_EQ(c->value, 3);
