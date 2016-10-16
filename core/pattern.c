@@ -95,6 +95,10 @@ bool MatchQ(BaseExpression* expr, BaseExpression* patt) {
 }
 
 
+// replace expression at base
+// Equivalent to Replace[expr, patt] but doesn't search into the expression
+// e.g. DoReplace(1 + a, a -> 2) doesn't apply because it doesn't match at root
+// returns NULL if no match is found
 BaseExpression* DoReplace(BaseExpression* expr, BaseExpression* patt) {
     // TODO
     return NULL;
