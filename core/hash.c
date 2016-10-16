@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
 
@@ -8,7 +9,6 @@
 #include "real.h"
 #include "rational.h"
 #include "string.h"
-#include "mem.h"
 
 
 uint64_t djb2(const char* str) {
@@ -74,8 +74,8 @@ uint64_t Hash_Rational(const Rational* expression) {
     seed = hash_combine(seed, Hash(numer));
     seed = hash_combine(seed, Hash(denom));
 
-    MemFree(numer);
-    MemFree(denom);
+    free(numer);
+    free(denom);
     return seed;
 }
 

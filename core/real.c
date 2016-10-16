@@ -6,7 +6,6 @@
 #include "types.h"
 #include "real.h"
 #include "expression.h"
-#include "mem.h"
 
 
 const double LOG_2_10 = 3.321928094887362;  // log2(10.0);
@@ -27,7 +26,7 @@ void MachineReal_set(MachineReal* p, const double value) {
 
 MachineReal* MachineReal_from_d(const double value) {
     MachineReal* result;
-    result = (MachineReal*) MemAlloc(sizeof(MachineReal));
+    result = (MachineReal*) malloc(sizeof(MachineReal));
     MachineReal_init(result);
     MachineReal_set(result, value);
     return result;

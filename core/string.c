@@ -4,11 +4,10 @@
 
 #include "types.h"
 #include "string.h"
-#include "mem.h"
 
 
 String* String_new(const uint64_t length) {
-    String* p = (String*) MemAlloc(sizeof(String) + length + 1);
+    String* p = (String*) malloc(sizeof(String) + length + 1);
     String_init(p, length);
     return p;
 }

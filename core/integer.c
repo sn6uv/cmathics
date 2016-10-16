@@ -4,11 +4,10 @@
 
 #include "types.h"
 #include "integer.h"
-#include "mem.h"
 
 
 MachineInteger* MachineInteger_new(void) {
-    MachineInteger* p = (MachineInteger*) MemAlloc(sizeof(MachineInteger));
+    MachineInteger* p = (MachineInteger*) malloc(sizeof(MachineInteger));
     MachineInteger_init(p);
     return p;
 }
@@ -27,7 +26,7 @@ void MachineInteger_set(MachineInteger* p, const int64_t value) {
 
 
 BigInteger* BigInteger_new(void) {
-    BigInteger* p = (BigInteger*) MemAlloc(sizeof(BigInteger));
+    BigInteger* p = (BigInteger*) malloc(sizeof(BigInteger));
     BigInteger_init(p);
     return p;
 }

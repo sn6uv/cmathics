@@ -8,7 +8,6 @@
 #include "expression.h"
 #include "integer.h"
 #include "hash.h"
-#include "mem.h"
 
 
 // required for bootstrapping
@@ -98,7 +97,7 @@ void Definitions_free(Definitions* d) {
     free(d->table);
     free(d);
     if (EmptyList != NULL && --EmptyList->base.ref == 0) {
-        MemFree((BaseExpression*) EmptyList);
+        free((BaseExpression*) EmptyList);
         EmptyList = NULL;
     }
 }

@@ -13,7 +13,6 @@
 #include "core/pattern.h"
 #include "core/integer.h"
 #include "core/rational.h"
-#include "core/mem.h"
 #include "core/arithmetic.h"
 
 

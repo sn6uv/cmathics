@@ -5,11 +5,10 @@
 
 #include "expression.h"
 #include "hash.h"
-#include "mem.h"
 
 
 Expression* Expression_new(uint32_t argc) {
-    Expression* p = (Expression*) MemAlloc(sizeof(Expression) + argc * sizeof(BaseExpression*));
+    Expression* p = (Expression*) malloc(sizeof(Expression) + argc * sizeof(BaseExpression*));
     Expression_init(p, argc);
     return p;
 }
