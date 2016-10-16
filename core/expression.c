@@ -25,10 +25,8 @@ void Expression_init(Expression* p, uint32_t argc) {
 void Expression_set(Expression* expr, BaseExpression* head, BaseExpression** leaves) {
     int32_t i;
     expr->head = head;
-    head->ref++;
     for (i=0; i<expr->argc; i++){
         expr->leaves[i] = leaves[i];
-        expr->leaves[i]->ref++;
     }
     expr->hash = Hash_Expression(expr);
 }

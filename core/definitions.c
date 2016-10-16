@@ -96,10 +96,7 @@ void Definitions_free(Definitions* d) {
     }
     free(d->table);
     free(d);
-    if (EmptyList != NULL && --EmptyList->base.ref == 0) {
-        free((BaseExpression*) EmptyList);
-        EmptyList = NULL;
-    }
+    // TODO free EmptyList
 }
 
 
