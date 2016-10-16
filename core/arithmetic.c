@@ -102,6 +102,7 @@ BaseExpression* add_MachineInexact(Expression* expr) {
         symbolics[symbolic_count++] = (BaseExpression*) MachineReal_from_d(sum);
         plus_result = Expression_new(symbolic_count);
         Expression_set(plus_result, expr->head, symbolics);
+        result = (BaseExpression*) plus_result;
     } else {
         // no symbolics
         result = (BaseExpression*) MachineReal_from_d(sum);
