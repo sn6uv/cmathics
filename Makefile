@@ -5,9 +5,9 @@ LINKS=-lgmp -lmpfr -lm
 DEPS = $(wildcard core/*.c)
 OBJS = $(patsubst %.c,%.o,$(DEPS))
 
-CPP=g++
+CXX=g++
 TEST_FLAGS=-Wall -pedantic -g -I.
-TEST_LINKS=-lgtest -lgmpxx -lm -lgmp -lmpfr
+TEST_LINKS=-pthread -lgtest -lgmpxx -lm -lgmp -lmpfr
 
 TEST_DEPS = $(wildcard tests/*.cpp)
 TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))
@@ -16,13 +16,13 @@ TEST_OBJS = $(patsubst %.cpp,%.o,$(TEST_DEPS))
 	$(CC) -c -o $@ $< $(FLAGS)
 
 %.o: %.cpp
-	$(CPP) -c -o $@ $< $(TEST_FLAGS)
+	$(CXX) -c -o $@ $< $(TEST_FLAGS)
 
 mathics: $(OBJS) mathics.o
 	$(CC) -o $@ $^ $(FLAGS) $(LINKS)
 
 test: $(TEST_OBJS) $(OBJS)
-	$(CPP) -o $@ $^ $(TEST_FLAGS) $(TEST_LINKS)
+	$(CXX) -o $@ $^ $(TEST_FLAGS) $(TEST_LINKS)
 
 run_test: test
 	./test

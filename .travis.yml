@@ -1,0 +1,29 @@
+language: cpp
+sudo: false
+compiler:
+  - gcc
+  - clang
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-4.8
+      - g++-4.8
+      - clang
+      - libgtest-dev
+      - libgmp-dev
+      - libmpfr-dev
+before_install:
+  # install gtest
+  - mkdir ~/gtest && cd ~/gtest
+  - export LIBRARY_PATH=$(pwd)
+  - cp -r /usr/src/gtest/* ./
+  - cmake -D CMAKE_INSTALL_PREFIX:PATH=./ ./
+  - make
+  - cd -
+install:
+  - make CC=$(CC) CXX=$(CXX)
+  - make CC=$(CC) CXX=$(CXX) test
+script:
+  - make run_test
