@@ -188,12 +188,22 @@ bool MatchQ_MachineReal(MachineReal* expr, MachineReal* patt) {
 bool MatchQ_Expression_Expression(Expression* expr, Expression* patt) {
     bool result;
     uint32_t i;
-    result = false;
-    if (expr->argc == patt->argc) {
-        result = MatchQ(expr->head, patt->head);
-        for (i=0; (i<expr->argc) && result; i++) {
-            result = result && MatchQ(expr->leaves[i], patt->leaves[i]);
-        }
+    uint32_t min_num_args;
+    uint32_t max_num_args;
+
+    // compute number of args that expr must have in order to match patt
+    match_num_args((BaseExpression*) patt, &min_num_args, &max_num_args);
+
+    // early exit if number of args not possible
+    // FIXME handle Flat and OneIdentity
+    if ((expr->argc < min_num_args) || (expr->argc > max_num_args)) {
+        return false;
+    }
+
+    // full comparison
+    result = MatchQ(expr->head, patt->head);
+    for (i=0; (i<expr->argc) && result; i++) {
+        result = result && MatchQ(expr->leaves[i], patt->leaves[i]);
     }
     return result;
 }
