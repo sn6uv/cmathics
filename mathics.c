@@ -14,6 +14,7 @@
 #include "core/integer.h"
 #include "core/rational.h"
 #include "core/arithmetic.h"
+#include "core/builtin.h"
 
 
 int main() {
@@ -22,8 +23,11 @@ int main() {
     Definitions* definitions = Definitions_new(64);
     Definitions_init(definitions, NULL);  // System Definitions
 
+    init_builtin_symbols();
+
     Expression* expr = Expression_new(2);
-    plus_symbol = Definitions_lookup(definitions, "Plus");
+    // plus_symbol = Definitions_lookup(definitions, "Plus");
+    plus_symbol = lookup_builtin_symbol("Plus", 4);
 
     BaseExpression* head = (BaseExpression*) plus_symbol;
     BaseExpression* la = (BaseExpression*) Definitions_lookup(definitions, "a");
